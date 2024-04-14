@@ -19,8 +19,6 @@ set_defaultmode("releasedbg")
 -- rules
 add_rules("mode.debug", "mode.releasedbg")
 
--- policies
-set_policy("package.requires_lock", true)
 
 -- packages
 add_requires("fmt", "frozen", "toml++")
