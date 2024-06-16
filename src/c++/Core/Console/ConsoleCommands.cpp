@@ -1,4 +1,4 @@
-#include "Core/Console/ConsoleCommands.hpp"
+#include "ConsoleCommands.hpp"
 
 namespace Core::ConsoleCommand
 {
@@ -6,7 +6,7 @@ namespace Core::ConsoleCommand
 	{
 		auto info = RE::SCRIPT_FUNCTION::LocateConsoleCommand("DumpNiUpdates");
 		if (!info) {
-			logger::info("Console command (DumpNiUpdates) not found. Skipping...");
+			SKSE::log::info("Console command (DumpNiUpdates) not found. Skipping...");
 			return;
 		}
 
@@ -20,7 +20,8 @@ namespace Core::ConsoleCommand
 		info->referenceFunction = false;
 	}
 
-	bool Clear::Execute(const RE::SCRIPT_PARAMETER*, RE::SCRIPT_FUNCTION::ScriptData*, RE::TESObjectREFR*, RE::TESObjectREFR*, RE::Script*, RE::ScriptLocals*, double&, uint32_t&)
+	bool Clear::Execute(const RE::SCRIPT_PARAMETER*, RE::SCRIPT_FUNCTION::ScriptData*,
+		RE::TESObjectREFR*, RE::TESObjectREFR*, RE::Script*, RE::ScriptLocals*, double&, uint32_t&)
 	{
 		const auto task = SKSE::GetTaskInterface();
 		task->AddUITask([] {

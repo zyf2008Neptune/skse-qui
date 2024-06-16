@@ -1,4 +1,6 @@
 #pragma once
+#include <src/c++/Scaleform/Object.hpp>
+
 
 namespace SF::CLIK::GFx::Controls
 {

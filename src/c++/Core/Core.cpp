@@ -1,17 +1,18 @@
-#include "Core/Core.hpp"
-#include "Core/Config.hpp"
+#include "Core.hpp"
+#include "Config.hpp"
 
-#include "Core/Console/ConsoleCommands.hpp"
+#include "Console/ConsoleCommands.hpp"
 
-#include "Core/Event/Event.hpp"
+#include "Event/Event.hpp"
 
-#include "Core/Locale/LocaleManager.hpp"
+#include "Locale/LocaleManager.hpp"
 
-#include "Core/Menu/JournalMenu.hpp"
-#include "Core/Menu/MainMenu.hpp"
-#include "Core/Menu/PluginExplorer.hpp"
-#include "Core/Menu/PluginExplorerHandler.hpp"
-#include "Core/Menu/PluginExplorerMenu.hpp"
+#include "Menu/JournalMenu.hpp"
+#include "Menu/MainMenu.hpp"
+#include "Menu/PluginExplorer.hpp"
+#include "Menu/PluginExplorerHandler.hpp"
+#include "Menu/PluginExplorerMenu.hpp"
+
 
 namespace Core
 {
@@ -21,16 +22,16 @@ namespace Core
 		if (config.PluginExplorer.Enable)
 			Menu::PluginExplorer::Init();
 
-		logger::info("Registering console commands...");
+		SKSE::log::info("Registering console commands...");
 		ConsoleCommand::Register();
 
-		logger::info("Registering menus...");
+		SKSE::log::info("Registering menus...");
 		if (const auto ui = RE::UI::GetSingleton()) {
 			if (config.PluginExplorer.Enable)
 				ui->Register(Menu::PluginExplorerMenu::MENU_NAME, Menu::PluginExplorerMenu::Create);
 		}
 
-		logger::info("Registering event handlers...");
+		SKSE::log::info("Registering event handlers...");
 		if (const auto event = Event::EventManager::GetSingleton()) {
 			event->Register();
 			if (config.PluginExplorer.Enable)
@@ -40,13 +41,13 @@ namespace Core
 
 	void Init()
 	{
-		logger::info("Loading config..."sv);
+		SKSE::log::info("Loading config..."sv);
 		if (const auto config = Config::GetSingleton()) {
 			config->Load();
 			config->Read();
 		}
 
-		logger::info("Loading localizations..."sv);
+		SKSE::log::info("Loading localizations..."sv);
 		auto& config = Config::Get();
 		if (const auto locale = LocaleManager::GetSingleton()) {
 			locale->SetLocale(config.General.Locale);
@@ -54,19 +55,20 @@ namespace Core
 			//locale->Dump();
 		}
 
-		logger::info("Installing hooks...");
+		SKSE::log::info("Installing hooks...");
 		if (config.JournalMenu.Enable)
 			Menu::JournalMenuEx::Install();
 
 		if (config.MainMenu.Enable)
 			Menu::MainMenuEx::Install();
 
-		logger::info("Registering listener...");
+		SKSE::log::info("Registering listener...");
 		if (const auto messaging = SKSE::GetMessagingInterface()) {
 			using Interface = SKSE::MessagingInterface;
 			messaging->RegisterListener("SKSE", [](Interface::Message* a_msg) {
 				switch (a_msg->type) {
-					case Interface::kDataLoaded: OnDataLoaded(); break;
+					case Interface::kDataLoaded: OnDataLoaded();
+						break;
 				}
 			});
 		}

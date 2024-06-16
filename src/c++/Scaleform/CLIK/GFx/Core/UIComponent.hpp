@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Scaleform/MovieClip.hpp"
+#include "src/c++/Scaleform/MovieClip.hpp"
 
 namespace SF::CLIK::GFx::Core
 {

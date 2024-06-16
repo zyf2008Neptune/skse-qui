@@ -1,31 +1,36 @@
 #pragma once
+#include <optional>
+#include <regex>
+#include <string_view>
+#include <unordered_map>
+#include "src/c++/quipch.hpp"
 
 namespace Core
 {
-	class LocalePackage final
-	{
-		using Items = std::unordered_map<std::wstring, std::wstring>;
+    class LocalePackage final
+    {
+        using Items = std::unordered_map<std::wstring, std::wstring>;
 
-	public:
-		LocalePackage() = default;
+    public:
+        LocalePackage() = default;
 
-		void Load();
-		void Load(const std::wstring& a_lang);
+        void Load();
+        void Load(const std::wstring& a_lang);
 
-		std::optional<std::wstring> FindItem(const std::wstring& a_key);
+        std::optional<std::wstring> FindItem(const std::wstring& a_key);
 
-		void Dump();
+        void Dump();
 
-	public:
-		bool empty() const noexcept { return _items.empty(); }
+    public:
+        bool empty() const noexcept { return _items.empty(); }
 
-	private:
-		void LoadFiles();
-		void ReadFile(const fs::path& a_path);
+    private:
+        void LoadFiles();
+        void ReadFile(const std::filesystem::path& a_path);
 
-	private:
-		std::wstring _language{ L"ENGLISH" };
-		std::wregex  _regex;
-		Items		 _items;
-	};
+    private:
+        std::wstring _language{L"ENGLISH"};
+        std::wregex _regex;
+        Items _items;
+    };
 }

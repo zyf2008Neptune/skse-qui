@@ -1,41 +1,45 @@
 #include "Core/Core.hpp"
-#include "PCH.hpp"
+#include "quipch.hpp"
+#include <fmt/format.h>
 
 void InitLogger()
 {
-	auto path = logger::log_directory();
-	if (!path)
-		return;
+    auto path = SKSE::log::log_directory();
+    if (!path)
+        return;
 
-	const auto plugin = SKSE::PluginDeclaration::GetSingleton();
-	*path /= fmt::format(FMT_STRING("{}.log"), plugin->GetName());
+    const auto plugin = SKSE::PluginDeclaration::GetSingleton();
+    *path /= fmt::format(FMT_STRING("{}.log"), plugin->GetName());
 
-	std::shared_ptr<spdlog::sinks::sink> sink;
-	if (WinAPI::IsDebuggerPresent()) {
-		sink = std::make_shared<spdlog::sinks::msvc_sink_mt>();
-	} else {
-		sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(path->string(), true);
-	}
+    std::shared_ptr<spdlog::sinks::sink> sink;
+    if (REX::W32::IsDebuggerPresent())
+    {
+        sink = std::make_shared<spdlog::sinks::msvc_sink_mt>();
+    }
+    else
+    {
+        sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(path->string(), true);
+    }
 
-	auto log = std::make_shared<spdlog::logger>("global log"s, sink);
-	log->set_level(spdlog::level::info);
-	log->flush_on(spdlog::level::info);
+    auto splog = std::make_shared<spdlog::logger>("global log"s, sink);
+    splog->set_level(spdlog::level::info);
+    splog->flush_on(spdlog::level::info);
 
-	spdlog::set_default_logger(std::move(log));
-	spdlog::set_pattern("%s(%#): [%^%l%$] %v"s);
+    spdlog::set_default_logger(std::move(splog));
+    spdlog::set_pattern("%s(%#): [%^%l%$] %v"s);
 }
 
 SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
 {
-	InitLogger();
+    InitLogger();
 
-	const auto plugin = SKSE::PluginDeclaration::GetSingleton();
-	logger::info("{} v{}"sv, plugin->GetName(), plugin->GetVersion());
+    const auto plugin = SKSE::PluginDeclaration::GetSingleton();
+    SKSE::log::info("{} v{}"sv, plugin->GetName(), plugin->GetVersion());
 
-	SKSE::Init(a_skse);
-	Core::Init();
+    SKSE::Init(a_skse);
+    Core::Init();
 
-	logger::info("{} loaded"sv, plugin->GetName());
+    SKSE::log::info("{} loaded"sv, plugin->GetName());
 
-	return true;
+    return true;
 }

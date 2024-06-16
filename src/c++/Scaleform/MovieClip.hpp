@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Scaleform/Object.hpp"
+#include "src/c++/Scaleform/Object.hpp"
 
 namespace SF
 {

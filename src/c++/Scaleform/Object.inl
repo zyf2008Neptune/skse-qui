@@ -1,4 +1,5 @@
 #pragma once
+#include "System/Assert.hpp"
 
 namespace SF
 {

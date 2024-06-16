@@ -9,6 +9,7 @@
 #include <RE/Skyrim.h>
 #pragma warning(pop)
 
+#include <fmt/format.h>
 #include <frozen/map.h>
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/msvc_sink.h>
@@ -16,12 +17,12 @@
 
 #include <source_location>
 
-namespace WinAPI = SKSE::WinAPI;
-namespace logger = SKSE::log;
-namespace fs = std::filesystem;
+//namespace WinAPI = SKSE::WinAPI;
+//namespace logger = SKSE::log;
+//namespace fs = std::filesystem;
 using namespace std::literals;
 
 namespace stl
 {
-	using namespace SKSE::stl;
+    using namespace SKSE::stl;
 }

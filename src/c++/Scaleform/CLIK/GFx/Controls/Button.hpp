@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Scaleform/CLIK/GFx/Core/UIComponent.hpp"
+#include "src/c++/Scaleform/CLIK/GFx/Core/UIComponent.hpp"
+#include <string>
+#include <src/c++/Scaleform/Object.hpp>
 
 namespace SF::CLIK::GFx::Controls
 {

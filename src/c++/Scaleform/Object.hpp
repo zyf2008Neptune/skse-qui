@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Scaleform/System/Assert.hpp"
+#include "src/c++/Scaleform/System/Assert.hpp"
 
 namespace SF
 {
@@ -60,7 +60,7 @@ namespace SF
 		bool        Invoke(const char* a_name);
 		bool        Invoke(const char* a_name, RE::GFxValue* a_result);
 		bool        Invoke(const char* a_name, RE::GFxValue* a_result, const RE::GFxValue* a_args, RE::UPInt a_numArgs);
-		bool        IsArray() const;                                                                                
+		bool        IsArray() const;
 		bool        IsObject() const;
 		void        SetBoolean(const char* a_path, bool a_bool);
 		void        SetNumber(const char* a_path, double a_num);

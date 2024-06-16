@@ -18,3 +18,10 @@ nagging you? Want to remove items from the list? Well, you're in luck!
 - [SKSE64](https://skse.silverlock.org/)
 - [SkyUI](https://www.nexusmods.com/skyrimspecialedition/mods/12604)
 - [Address Library](https://www.nexusmods.com/skyrimspecialedition/mods/32444)
+
+# Build Dependencies
+- [fmt](https://github.com/fmtlib/fmt)
+- [frozen](https://github.com/serge-sans-paille/frozen)
+- [toml++](https://github.com/marzer/tomlplusplus)
+- [spdlog](https://github.com/gabime/spdlog)
+- [CommonLibSSE NG](https://github.com/CharmedBaryon/CommonLibSSE-NG)

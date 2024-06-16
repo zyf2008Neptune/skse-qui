@@ -1,8 +1,13 @@
 #pragma once
 
-#include "Core/Locale/LocalePackage.hpp"
+#include <optional>
+#include <queue>
+#include <stack>
+#include <string>
 
-#include "General/Singleton.hpp"
+#include "LocalePackage.hpp"
+
+#include "src/c++/General/Singleton.hpp"
 
 namespace Core
 {
@@ -24,7 +29,7 @@ namespace Core
 
 	public:
 		std::wstring GetLocalization(const std::wstring& a_key);
-		std::string GetLocalization(const std::string& a_key);
+		std::string  GetLocalization(const std::string& a_key);
 
 		LocalePackage& GetLocalePackage();
 
@@ -34,13 +39,13 @@ namespace Core
 		std::optional<std::wstring> FindLocalization(const std::wstring& a_key);
 
 		bool GetNestedLocalizations(
-			const std::wstring& a_key,
-			std::stack<size_type>& a_stack,
+			const std::wstring&       a_key,
+			std::stack<size_type>&    a_stack,
 			std::queue<std::wstring>& a_queue);
 
 		bool InsertLocalizations(
-			std::wstring& a_localization,
-			std::stack<size_type>& a_stack,
+			std::wstring&             a_localization,
+			std::stack<size_type>&    a_stack,
 			std::queue<std::wstring>& a_queue);
 
 	private:
