@@ -8,7 +8,7 @@ on:
       - 'res/**'
       - 'src/**'
       - 'xmake.lua'
-      - 'xmake-requires.lock'
+      
   pull_request:
     branches: [ main ]
 

@@ -1,8 +1,8 @@
-set_xmakever("2.7.2")
+set_xmakever("2.9.2")
 
 -- project
 set_project("QUI")
-set_version("0.3.2")
+set_version("0.3.3")
 set_license("MIT")
 set_languages("c++20")
 set_optimize("faster")
