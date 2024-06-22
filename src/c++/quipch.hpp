@@ -13,7 +13,6 @@
 #include <frozen/map.h>
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/msvc_sink.h>
-//#include <toml++/toml.h>
 #include <toml++/toml.h>
 
 #include <source_location>

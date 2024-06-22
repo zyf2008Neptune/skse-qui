@@ -1,6 +1,4 @@
 #pragma once
-#include <cstdint>
-//#include "src/c++/quipch.hpp"
 
 namespace Core::ConsoleCommand
 {

@@ -1,6 +1,4 @@
 #include "Core/Core.hpp"
-#include "quipch.hpp"
-#include <fmt/format.h>
 
 void InitLogger()
 {

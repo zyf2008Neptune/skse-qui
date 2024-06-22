@@ -1,6 +1,5 @@
 #include "LocaleManager.hpp"
 #include "Locale.hpp"
-#include "src/c++/quipch.hpp"
 
 namespace Core
 {

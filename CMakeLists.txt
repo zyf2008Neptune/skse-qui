@@ -1,11 +1,10 @@
 cmake_minimum_required(VERSION 3.27)
 
-project(QUI
-		LANGUAGES CXX
-		VERSION 3.3.0)
+project(QUI	LANGUAGES CXX)
+set(PROJECT_VERSION 0.3.3)
 
-set(CMAKE_CXX_STANDARD 20)
-#set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(PROJECT_ROOT ${CMAKE_SOURCE_DIR})
 
@@ -24,7 +23,7 @@ file(GLOB_RECURSE project_files
     src/c++/Scaleform/system/*
     src/c++/Scaleform/*
     src/c++/main.cpp
-    src/c++/quipch.hpp
+	src/c++/plugininfo.cpp
 )
 
 #message(${project_files})
@@ -117,8 +116,25 @@ if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
 		-Wno-reinterpret-base-class               #
 		-Wno-dynamic-class-memaccess			  #
 	)
-
 endif()
+
+if (WIN32)
+  add_compile_definitions(
+          UNICODE
+          _UNICODE
+          NOMINMAX
+          _AMD64_
+          WIN32_LEAN_AND_MEAN
+  )
+endif ()
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    add_compile_definitions(
+            __cpp_lib_char8_t
+            __cpp_consteval
+            __cpp_lib_format
+    )
+endif ()
 
 
 
@@ -128,7 +144,7 @@ target_precompile_headers(
 		src/c++/quipch.hpp
 )
 
-
+set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 
 
 

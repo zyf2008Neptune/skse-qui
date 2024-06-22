@@ -1,8 +1,6 @@
 #pragma once
 
 #include "src/c++/General/Singleton.hpp"
-#include <string>
-#include "src/c++/quipch.hpp"
 
 namespace Core
 {

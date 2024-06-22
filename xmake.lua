@@ -23,7 +23,7 @@ add_rules("mode.debug", "mode.releasedbg")
 -- packages
 
 
-add_requires("fmt", "frozen", "toml++")
+add_requires("fmt", "frozen", "toml++ 3.1.0")
 add_requires("spdlog", { configs = { header_only = false } })
 add_requires("commonlibsse-ng", { configs = { skyrim_vr = false }})
 	

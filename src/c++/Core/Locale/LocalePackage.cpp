@@ -2,9 +2,7 @@
 #include "Locale.hpp"
 
 #include <codecvt>
-#include <regex>
 
-#include "src/c++/quipch.hpp"
 
 namespace Core
 {

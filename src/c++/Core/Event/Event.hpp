@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vector>
-#include "src/c++/quipch.hpp"
 #include "src/c++/General/Singleton.hpp"
 
 namespace Core

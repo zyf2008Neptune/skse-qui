@@ -5,8 +5,6 @@
 
 #include "src/c++/Core/Config.hpp"
 
-#include <array>
-#include <RE/Offsets_VTABLE.h>
 
 namespace Core::Menu
 {

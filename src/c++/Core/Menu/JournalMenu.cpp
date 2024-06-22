@@ -1,7 +1,7 @@
 #include "JournalMenu.hpp"
 
 #include "src/c++/Core/Config.hpp"
-//#include "src/c++/quipch.hpp"
+
 
 namespace Core::Menu
 {

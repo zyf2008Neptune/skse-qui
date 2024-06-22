@@ -5,7 +5,6 @@
 #include "src/c++/Core/locale/LocaleManager.hpp"
 #include "src/c++/Core/Locale/LocaleStrings.hpp"
 
-#include "src/c++/quipch.hpp"
 
 namespace Core::Menu::Item
 {
