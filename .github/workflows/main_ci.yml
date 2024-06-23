@@ -16,12 +16,12 @@ jobs:
   windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@master
 
       - name: Setup XMake
-        uses: xmake-io/github-action-setup-xmake@v1.0.13
+        uses: xmake-io/github-action-setup-xmake@master
         with:
-          xmake-version: '>=2.7.2'
+          xmake-version: branch@dev
 
       - name: Setup XMake (Global)
         run: |
@@ -33,18 +33,12 @@ jobs:
         run: |
           echo "hash=$(xmake l utils.ci.packageskey)" >> $env:GITHUB_OUTPUT
 
-      - name: Setup Packages (Cache)
-        uses: actions/cache@v3
-        with:
-          path: ${{ env.GLOBAL_XMAKE }}/packages
-          key: ${{ steps.packages_key.outputs.hash }}
-
       - name: Build and Package
         run: |
           xmake package -y
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@master
         with:
           name: build
           path: ${{ github.workspace }}/build/packages/**/*.zip
