@@ -28,10 +28,7 @@ jobs:
           xmake repo --update
           echo "GLOBAL_XMAKE=$env:LOCALAPPDATA/.xmake/" >> $env:GITHUB_ENV
 
-      - name: Setup Packages (Hash)
-        id: packages_key
-        run: |
-          echo "hash=$(xmake l utils.ci.packageskey)" >> $env:GITHUB_OUTPUT
+      
 
       - name: Build and Package
         run: |
