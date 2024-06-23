@@ -33,6 +33,12 @@ jobs:
         run: |
           echo "hash=$(xmake l utils.ci.packageskey)" >> $env:GITHUB_OUTPUT
 
+      - name: Setup Packages (Cache)
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.GLOBAL_XMAKE }}/packages
+          key: ${{ steps.packages_key.outputs.hash }}
+
       - name: Build and Package
         run: |
           xmake package -y
