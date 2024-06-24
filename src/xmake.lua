@@ -1,5 +1,5 @@
 target("QUI")
-    add_packages("frozen", "toml++", "fmt", "spdlog", "commonlibsse-ng")
+    add_packages("frozen", "toml++", "fmt", "spdlog", "commonlibsse")
 
     add_rules("@commonlibsse-ng/plugin", {
         name = "QUI",
@@ -9,7 +9,7 @@ target("QUI")
 
     add_files("c++/**.cpp")
     add_includedirs("c++")
-    set_pcxxheader("c++/PCH.hpp")
+    set_pcxxheader("c++/quipch.hpp")
 
     add_rules("mod.package", {
         ["@{target}-@{target_ver}.zip"] = {
