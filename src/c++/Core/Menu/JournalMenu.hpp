@@ -17,6 +17,7 @@ namespace Core::Menu
     public:
         void AcceptEx(RE::FxDelegateHandler::CallbackProcessor* a_cbReg); // 01
         RE::UI_MESSAGE_RESULTS ProcessMessageEx(RE::UIMessage& a_message); // 04
+        ~JournalMenuEx() override;
 
     private:
         using AcceptFn = decltype(&RE::JournalMenu::Accept);

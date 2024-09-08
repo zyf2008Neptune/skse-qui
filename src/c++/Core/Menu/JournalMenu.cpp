@@ -39,8 +39,8 @@ namespace Core::Menu
     void JournalMenuEx::Install()
     {
         REL::Relocation<uintptr_t> vtbl(RE::VTABLE_JournalMenu[0]);
-        _AcceptFn = vtbl.write_vfunc(0x1, &AcceptEx);
-        _ProcessMessageFn = vtbl.write_vfunc(0x4, &ProcessMessageEx);
+        _AcceptFn = vtbl.write_vfunc(0x1, &JournalMenuEx::AcceptEx);
+        _ProcessMessageFn = vtbl.write_vfunc(0x4, &JournalMenuEx::ProcessMessageEx);
         _TabIdx = {RELOCATION_ID(520167, 406697)};
     }
 }

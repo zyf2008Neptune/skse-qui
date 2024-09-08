@@ -14,7 +14,8 @@
     "spdlog",
     "tomlplusplus",
     "directxmath",
-    "directxtk"
+    "directxtk",
+    "xbyak"
 
   ],
   "overrides": [

@@ -26,8 +26,6 @@ file(GLOB_RECURSE project_files
 	src/c++/plugininfo.cpp
 )
 
-#message(${project_files})
-
 
 #CommonLibSSE
 include(FetchContent)
@@ -42,6 +40,9 @@ FetchContent_MakeAvailable(CommonLibSSE)
 
 list(APPEND DEP CommonLibSSE::CommonLibSSE)
 
+#to do
+#add custom vcpkg port of commlibsse
+
 
 # fmt
 find_package(fmt CONFIG REQUIRED)
@@ -54,8 +55,9 @@ list(APPEND DEP frozen::frozen frozen::frozen-headers)
 
 
 #toml++
-find_package(tomlplusplus CONFIG REQUIRED)
-list(APPEND DEP tomlplusplus::tomlplusplus)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(tomlplusplus REQUIRED IMPORTED_TARGET tomlplusplus)
+list(APPEND DEP PkgConfig::tomlplusplus)
 
 # spdlog
 find_package(spdlog CONFIG REQUIRED)

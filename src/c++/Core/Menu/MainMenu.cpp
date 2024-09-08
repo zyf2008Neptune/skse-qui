@@ -156,6 +156,6 @@ namespace Core::Menu
     void MainMenuEx::Install()
     {
         REL::Relocation<uintptr_t> vtbl(RE::VTABLE_MainMenu[0]);
-        _ProcessMessageFn = vtbl.write_vfunc(0x4, &ProcessMessageEx);
+        _ProcessMessageFn = vtbl.write_vfunc(0x4, &MainMenuEx::ProcessMessageEx);
     }
 }
