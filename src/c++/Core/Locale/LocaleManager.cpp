@@ -1,11 +1,16 @@
-#include "LocaleManager.hpp"
 #include "Locale.hpp"
+#include "LocaleManager.hpp"
+
+#include <optional>
+#include <queue>
+#include <RE/M/Misc.h>
+#include <SKSE/Impl/PCH.h>
+#include <stack>
+#include <string>
 
 namespace Core
 {
-    LocaleManager::LocaleManager() :
-        _packageENG(),
-        _packageLOC()
+    LocaleManager::LocaleManager()
     {
     }
 
@@ -108,7 +113,7 @@ namespace Core
         auto item = package.FindItem(a_key);
         if (!item)
         {
-            auto key = stl::utf16_to_utf8(a_key);
+            const auto key = stl::utf16_to_utf8(a_key);
             spdlog::info("Key not found: {}", key.value_or(""));
             if (&package != &_packageENG)
             {
@@ -161,6 +166,7 @@ namespace Core
                 }
                 break;
             }
+            default: ;
             }
         }
 
@@ -193,6 +199,7 @@ namespace Core
                 pos = beg;
             }
             break;
+            default: ;
             }
         }
 

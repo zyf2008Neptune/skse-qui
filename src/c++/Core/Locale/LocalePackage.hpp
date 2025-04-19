@@ -1,5 +1,9 @@
 #pragma once
 
+#include <regex>
+#include <string>
+#include <unordered_map>
+
 namespace Core
 {
     class LocalePackage final

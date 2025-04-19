@@ -1,5 +1,9 @@
 #pragma once
 
+#include <optional>
+#include <stack>
+#include <string>
+
 namespace Core::Locale
 {
     inline std::optional<std::wstring> SanitizeKey(std::wstring a_key)

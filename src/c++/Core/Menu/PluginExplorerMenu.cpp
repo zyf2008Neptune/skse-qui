@@ -282,13 +282,13 @@ namespace Core::Menu
 
     bool PluginExplorerMenu::IsOpen()
     {
-        auto ui = RE::UI::GetSingleton();
+        const auto ui = RE::UI::GetSingleton();
         return ui->IsMenuOpen(MENU_NAME);
     }
 
     void PluginExplorerMenu::Open()
     {
-        auto queue = RE::UIMessageQueue::GetSingleton();
+        const auto queue = RE::UIMessageQueue::GetSingleton();
         queue->AddMessage(MENU_NAME, RE::UI_MESSAGE_TYPE::kShow, nullptr);
     }
 
@@ -301,9 +301,13 @@ namespace Core::Menu
     void PluginExplorerMenu::Toggle()
     {
         if (IsOpen())
+        {
             Close();
+        }
         else
+        {
             Open();
+        }
     }
 
     void PluginExplorerMenu::Init()

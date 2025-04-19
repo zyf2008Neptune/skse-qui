@@ -1,6 +1,11 @@
 #include "Event.hpp"
 #include "EventHandler.hpp"
 
+#include <RE/B/BSInputDeviceManager.h>
+#include <RE/M/MenuOpenCloseEvent.h>
+#include <RE/U/UI.h>
+#include <SKSE/Logger.h>
+
 namespace Core::Event
 {
     void EventManager::Register()

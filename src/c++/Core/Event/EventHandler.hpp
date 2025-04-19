@@ -1,5 +1,8 @@
 #pragma once
 
+#include <RE/I/InputEvent.h>
+#include <RE/M/MenuOpenCloseEvent.h>
+
 namespace Core
 {
     class IEventHandler

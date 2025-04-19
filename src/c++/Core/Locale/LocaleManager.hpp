@@ -1,5 +1,8 @@
 #pragma once
 
+#include <stack>
+#include <string>
+
 #include "LocalePackage.hpp"
 #include "src/c++/General/Singleton.hpp"
 

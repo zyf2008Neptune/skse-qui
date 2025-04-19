@@ -1,7 +1,16 @@
-#include "LocalePackage.hpp"
 #include "Locale.hpp"
+#include "LocalePackage.hpp"
 
 #include <codecvt>
+#include <filesystem>
+#include <iosfwd>
+#include <locale>
+#include <optional>
+#include <regex>
+#include <SKSE/Impl/PCH.h>
+#include <SKSE/Logger.h>
+#include <spdlog/spdlog.h>
+#include <string>
 
 
 namespace Core
@@ -12,7 +21,7 @@ namespace Core
     constexpr wchar_t REGEX_POSTFIX[]{L"\\.txt$"};
     constexpr auto REGEX_FLAGS{std::regex::grep | std::regex::icase};
 
-    constexpr auto CVT_MODE = std::codecvt_mode(std::little_endian | std::consume_header);
+    constexpr auto CVT_MODE = static_cast<std::codecvt_mode>(std::little_endian | std::consume_header);
 
     void LocalePackage::Load()
     {
@@ -62,10 +71,9 @@ namespace Core
         if (!std::filesystem::exists(LOCALE_PATH, err))
             return;
 
-        std::filesystem::path fileName;
         for (auto& dir : std::filesystem::directory_iterator(LOCALE_PATH))
         {
-            fileName = dir.path().filename();
+            std::filesystem::path fileName = dir.path().filename();
             const auto& native = fileName.native();
             if (std::regex_match(native, _regex))
             {

@@ -1,5 +1,10 @@
 #pragma once
 
+#include <RE/B/BSTEvent.h>
+#include <RE/I/InputEvent.h>
+#include <RE/M/MenuOpenCloseEvent.h>
+#include <vector>
+
 #include "src/c++/General/Singleton.hpp"
 
 namespace Core

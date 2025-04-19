@@ -5,6 +5,8 @@
 #include "src/c++/Core/locale/LocaleManager.hpp"
 #include "src/c++/Core/Locale/LocaleStrings.hpp"
 
+#include <RE/F/FormTypes.h>
+
 
 namespace Core::Menu::Item
 {

@@ -5,7 +5,7 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": {
           "type": "STRING",
-          "value": "Debug"
+          "value": "Release"
         }
       },
       "errors": {
@@ -49,23 +49,9 @@
         "vcpkg",
         "windows"
       ],
-      "name": "vs2022-windows-vcpkg",
-      "binaryDir": "${sourceDir}/build/msvc"
-    },
-    {
-      "cacheVariables": {
-        "CMAKE_CXX_COMPILER": "clang-cl"
-      },
-      "generator": "Ninja",
-      "inherits": [
-        "cmake-dev",
-        "vcpkg",
-        "windows"
-      ],
-      "name": "clang-windows-vcpkg",
-      "binaryDir": "${sourceDir}/build/clang"
-
-    }
+      "name": "x64-windows",
+      "binaryDir": "${sourceDir}/out/"
+    }    
   ],
   "version": 2
 }

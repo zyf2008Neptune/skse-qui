@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+#include <RE/F/FormTypes.h>
+
 #include "src/c++/General/Singleton.hpp"
 
 namespace Core

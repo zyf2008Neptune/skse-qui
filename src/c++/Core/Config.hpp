@@ -1,9 +1,14 @@
 #pragma once
 
+#define TOML_EXCEPTIONS 0
+
+#include <cstdint>
 #include <string>
 #include <unordered_map>
+#include <toml++/impl/node.h>
+#include <toml++/impl/node_view.h>
+#include <toml++/impl/parse_result.h>
 
-#include "src/c++/quipch.hpp"
 #include "src/c++/General/Singleton.hpp"
 
 namespace Core::Private
@@ -12,7 +17,7 @@ namespace Core::Private
     {
         struct
         {
-            std::string Locale{""};
+            std::string Locale{};
         } General;
 
         struct

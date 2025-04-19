@@ -3,11 +3,12 @@ cmake_minimum_required(VERSION 3.27)
 project(QUI	LANGUAGES CXX)
 set(PROJECT_VERSION 0.3.3)
 
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(PROJECT_ROOT ${CMAKE_SOURCE_DIR})
 
+add_subdirectory(Commonlib CommonLibSSE)
 
 file(GLOB_RECURSE project_files
     src/c++/core/console/*
@@ -28,16 +29,16 @@ file(GLOB_RECURSE project_files
 
 
 #CommonLibSSE
-include(FetchContent)
-FetchContent_Declare(
-  CommonLibSSE
-  GIT_REPOSITORY https://github.com/zyf2008Neptune/CommonLibSSE-NG
+#include(FetchContent)
+#FetchContent_Declare(
+#  CommonLibSSE
+#  GIT_REPOSITORY https://github.com/zyf2008Neptune/CommonLibSSE-NG
 
-  GIT_TAG        main
+#  GIT_TAG        main
  
-)
-FetchContent_MakeAvailable(CommonLibSSE)
-
+#)
+#FetchContent_MakeAvailable(CommonLibSSE)
+#find_package(CommonLibSSE CONFIG REQUIRED)
 list(APPEND DEP CommonLibSSE::CommonLibSSE)
 
 #to do

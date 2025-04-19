@@ -15,8 +15,8 @@
     "tomlplusplus",
     "directxmath",
     "directxtk",
-    "xbyak"
-
+    "xbyak",
+    "catch2"
   ],
   "overrides": [
     {

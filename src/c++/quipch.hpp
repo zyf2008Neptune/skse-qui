@@ -17,9 +17,6 @@
 
 #include <source_location>
 
-//namespace WinAPI = SKSE::WinAPI;
-//namespace logger = SKSE::log;
-//namespace fs = std::filesystem;
 using namespace std::literals;
 
 namespace stl

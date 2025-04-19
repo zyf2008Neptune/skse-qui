@@ -1,4 +1,8 @@
 #pragma once
+#include <cstdint>
+#include <RE/C/CommandTable.h>
+#include <RE/S/Script.h>
+#include <RE/T/TESObjectREFR.h>
 
 namespace Core::ConsoleCommand
 {

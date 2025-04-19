@@ -1,5 +1,23 @@
 #include "Config.hpp"
-#include "src/c++/quipch.hpp"
+
+#include <cstdint>
+#include <filesystem>
+#include <iosfwd>
+#include <optional>
+#include <sstream>
+#include <string>
+#include <unordered_map>
+#include <fmt/core.h>
+#include <toml++/impl/key.h>
+#include <toml++/impl/node.h>
+#include <toml++/impl/node.inl>
+#include <toml++/impl/node_view.h>
+#include <toml++/impl/parser.inl>
+#include <toml++/impl/parse_error.h>
+#include <toml++/impl/parse_result.h>
+#include <SKSE/Interfaces.h>
+#include <SKSE/Logger.h>
+#include <SKSE/Impl/PCH.h>
 
 namespace Core
 {
@@ -143,7 +161,7 @@ namespace Core
 
     Private::ConfigImpl& Config::Get()
     {
-        auto config = GetSingleton();
+        const auto config = GetSingleton();
         return config->_impl;
     }
 }
