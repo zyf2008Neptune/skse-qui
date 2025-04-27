@@ -1,0 +1,3 @@
+[submodule "CommonLibSSE"]
+	path = Commonlib
+	url = https://github.com/zyf2008Neptune/CommonLibSSE-NG.git
