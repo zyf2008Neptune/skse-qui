@@ -4,7 +4,9 @@ void InitLogger()
 {
     auto path = SKSE::log::log_directory();
     if (!path)
+    {
         return;
+    }
 
     const auto plugin = SKSE::PluginDeclaration::GetSingleton();
     *path /= fmt::format(FMT_STRING("{}.log"), plugin->GetName());

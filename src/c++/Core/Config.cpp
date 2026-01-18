@@ -2,23 +2,19 @@
 
 #include <cstdint>
 #include <filesystem>
+#include <fmt/core.h>
 #include <iosfwd>
 #include <optional>
-#include <sstream>
-#include <string>
-#include <unordered_map>
-#include <fmt/core.h>
-#include <toml++/impl/key.h>
-#include <toml++/impl/node.h>
-#include <toml++/impl/node.inl>
-#include <toml++/impl/node_view.h>
-#include <toml++/impl/parser.inl>
-#include <toml++/impl/parse_error.h>
-#include <toml++/impl/parse_result.h>
+#include <SKSE/Impl/PCH.h>
 #include <SKSE/Interfaces.h>
 #include <SKSE/Logger.h>
-#include <SKSE/Impl/PCH.h>
+#include <sstream>
 #include <string_view>
+#include <string>
+#include <toml11/exception.hpp>
+#include <toml11/parser.hpp>
+#include <toml11/value.hpp>
+#include <unordered_map>
 
 namespace Core
 {
@@ -28,28 +24,39 @@ namespace Core
         auto path = fmt::format("Data/SKSE/Plugins/{}.toml"sv, plugin->GetName());
         auto pathCustom = fmt::format("Data/SKSE/Plugins/{}_Custom.toml"sv, plugin->GetName());
 
-        _result = toml::parse_file(path);
-        if (!_result)
+        if (std::filesystem::exists(path))
         {
-            SKSE::log::info("Default file failed!");
-            std::ostringstream ss;
-            ss << "Failed to load config:\n"
-                << "Error parsing file:\n"
-                << _result.error() << "\n";
-            SKSE::log::error("{}", ss.str());
-            stl::report_and_fail(ss.str());
+            try
+            {
+                _result = toml::parse(path);
+            }
+            catch (const toml::syntax_error& err)
+            {
+                SKSE::log::info("Default file failed!");
+                std::ostringstream ss;
+                ss << "Failed to load config:\n"
+                    << "Error parsing file:\n"
+                    << err.what() << "\n";
+                SKSE::log::error("{}", ss.str());
+                stl::report_and_fail(ss.str());
+            }
         }
 
-        _resultCustom = toml::parse_file(pathCustom);
-        bool exists = std::filesystem::exists(pathCustom);
-        if (!_resultCustom && exists)
+        if (std::filesystem::exists(pathCustom))
         {
-            std::ostringstream ss;
-            ss << "Failed to load custom config:\n"
-                << "Error parsing file:\n"
-                << _resultCustom.error() << "\n";
-            SKSE::log::error("{}", ss.str());
-            stl::report_and_fail(ss.str());
+            try
+            {
+                _resultCustom = toml::parse(pathCustom);
+            }
+            catch (const toml::syntax_error& err)
+            {
+                std::ostringstream ss;
+                ss << "Failed to load custom config:\n"
+                    << "Error parsing file:\n"
+                    << err.what() << "\n";
+                SKSE::log::error("{}", ss.str());
+                stl::report_and_fail(ss.str());
+            }
         }
     }
 
@@ -57,59 +64,56 @@ namespace Core
     {
         _impl = {};
 
-#define GET_VALUE(VALUE_PATH) \
-			GetValue(#VALUE_PATH, _impl.VALUE_PATH);
-
-        GET_VALUE(General.Locale)
-        GET_VALUE(PluginExplorer.Enable)
-        GET_VALUE(PluginExplorer.Pause)
-        GET_VALUE(PluginExplorer.Loop)
-        GET_VALUE(PluginExplorer.Sound)
-        GET_VALUE(PluginExplorer.Key.KeyboardToggle)
-        GET_VALUE(PluginExplorer.Count.Alchemy)
-        GET_VALUE(PluginExplorer.Count.Ammo)
-        GET_VALUE(PluginExplorer.Count.Armor)
-        GET_VALUE(PluginExplorer.Count.Book)
-        GET_VALUE(PluginExplorer.Count.Ingredient)
-        GET_VALUE(PluginExplorer.Count.Key)
-        GET_VALUE(PluginExplorer.Count.Misc)
-        GET_VALUE(PluginExplorer.Count.Note)
-        GET_VALUE(PluginExplorer.Count.Scroll)
-        GET_VALUE(PluginExplorer.Count.Soul)
-        GET_VALUE(PluginExplorer.Count.Spell)
-        GET_VALUE(PluginExplorer.Count.Weapon)
-        GET_VALUE(PluginExplorer.Plugin.Enable)
-        GET_VALUE(MainMenu.Enable)
-        GET_VALUE(MainMenu.UI.Logo)
-        GET_VALUE(MainMenu.UI.Motd)
-        GET_VALUE(MainMenu.UI.Banner)
-        GET_VALUE(MainMenu.List.CC)
-        GET_VALUE(MainMenu.List.DLC)
-        GET_VALUE(MainMenu.List.Mods)
-        GET_VALUE(MainMenu.List.Credits)
-        GET_VALUE(MainMenu.List.Help)
-        GET_VALUE(JournalMenu.Enable)
-        GET_VALUE(JournalMenu.DefaultPage)
-
-#undef GET_VALUE
+        GetValue("General.Locale", _impl.General.Locale);
+        GetValue("PluginExplorer.Enable", _impl.PluginExplorer.Enable);
+        GetValue("PluginExplorer.Pause", _impl.PluginExplorer.Pause);
+        GetValue("PluginExplorer.Loop", _impl.PluginExplorer.Loop);
+        GetValue("PluginExplorer.Sound", _impl.PluginExplorer.Sound);
+        GetValue("PluginExplorer.Key.KeyboardToggle", _impl.PluginExplorer.Key.KeyboardToggle);
+        GetValue("PluginExplorer.Count.Alchemy", _impl.PluginExplorer.Count.Alchemy);
+        GetValue("PluginExplorer.Count.Ammo", _impl.PluginExplorer.Count.Ammo);
+        GetValue("PluginExplorer.Count.Armor", _impl.PluginExplorer.Count.Armor);
+        GetValue("PluginExplorer.Count.Book", _impl.PluginExplorer.Count.Book);
+        GetValue("PluginExplorer.Count.Ingredient", _impl.PluginExplorer.Count.Ingredient);
+        GetValue("PluginExplorer.Count.Key", _impl.PluginExplorer.Count.Key);
+        GetValue("PluginExplorer.Count.Misc", _impl.PluginExplorer.Count.Misc);
+        GetValue("PluginExplorer.Count.Note", _impl.PluginExplorer.Count.Note);
+        GetValue("PluginExplorer.Count.Scroll", _impl.PluginExplorer.Count.Scroll);
+        GetValue("PluginExplorer.Count.Soul", _impl.PluginExplorer.Count.Soul);
+        GetValue("PluginExplorer.Count.Spell", _impl.PluginExplorer.Count.Spell);
+        GetValue("PluginExplorer.Count.Weapon", _impl.PluginExplorer.Count.Weapon);
+        GetValue("PluginExplorer.Plugin.Enable", _impl.PluginExplorer.Plugin.Enable);
+        GetValue("MainMenu.Enable", _impl.MainMenu.Enable);
+        GetValue("MainMenu.UI.Logo", _impl.MainMenu.UI.Logo);
+        GetValue("MainMenu.UI.Motd", _impl.MainMenu.UI.Motd);
+        GetValue("MainMenu.UI.Banner", _impl.MainMenu.UI.Banner);
+        GetValue("MainMenu.List.CC", _impl.MainMenu.List.CC);
+        GetValue("MainMenu.List.DLC", _impl.MainMenu.List.DLC);
+        GetValue("MainMenu.List.Mods", _impl.MainMenu.List.Mods);
+        GetValue("MainMenu.List.Credits", _impl.MainMenu.List.Credits);
+        GetValue("MainMenu.List.Help", _impl.MainMenu.List.Help);
+        GetValue("JournalMenu.Enable", _impl.JournalMenu.Enable);
+        GetValue("JournalMenu.DefaultPage", _impl.JournalMenu.DefaultPage);
     }
 
-    auto Config::GetNode(const char* a_path) -> toml::node_view<toml::node>
+    auto Config::GetNode(const std::string& a_path) -> toml::value
     {
-        if (_resultCustom)
+        if (_resultCustom.is_empty())
         {
-            auto& table = _resultCustom.table();
-            auto node = table.at_path(a_path);
-            if (node)
+            auto& node = _resultCustom.at(a_path);
+            if (!node.is_empty())
+            {
                 return node;
+            }
         }
 
-        if (_result)
+        if (!_result.is_empty())
         {
-            auto& table = _result.table();
-            auto node = table.at_path(a_path);
-            if (node)
+            auto& node = _result.at(a_path);
+            if (!node.is_empty())
+            {
                 return node;
+            }
         }
 
         return {};
@@ -118,43 +122,50 @@ namespace Core
     void Config::GetValue(const char* a_path, bool& a_value)
     {
         auto node = GetNode(a_path);
-        if (node && node.is_boolean())
-            a_value = node.value_or(a_value);
+        {
+            if (node.is_boolean()) { a_value = toml::get<bool>(node); }
+        }
     }
 
     void Config::GetValue(const char* a_path, uint32_t& a_value)
     {
         auto node = GetNode(a_path);
-        if (node && node.is_integer())
-            a_value = node.value_or(a_value);
+        if (node.is_integer())
+        {
+            auto val = toml::get<int64_t>(node);
+            a_value = static_cast<uint32_t>(val);
+        }
     }
 
     void Config::GetValue(const char* a_path, float& a_value)
     {
         auto node = GetNode(a_path);
-        if (node && node.is_floating_point())
-            a_value = node.value_or(a_value);
+        {
+            if (node.is_floating()) { a_value = static_cast<float>(toml::get<double>(node)); }
+        }
     }
 
     void Config::GetValue(const char* a_path, std::string& a_value)
     {
         auto node = GetNode(a_path);
-        if (node && node.is_string())
-            a_value = node.value_or(a_value);
+        {
+            if (node.is_string()) { a_value = toml::get<std::string>(node); }
+        }
     }
 
     void Config::GetValue(const char* a_path, std::unordered_map<std::string, bool>& a_value)
     {
         auto node = GetNode(a_path);
-        if (node)
+        if (node.is_table())
         {
-            if (node.is_table())
+            auto& table = toml::get<toml::table>(node);
+            for (const auto& [key, value] : table)
             {
-                for (const auto& [key, value] : *node.as_table())
                 {
-                    auto opt = value.value<bool>();
-                    if (opt && !key.empty())
-                        a_value[key.data()] = opt.value();
+                    if (value.is_boolean() && !key.empty())
+                    {
+                        a_value[key] = toml::get<bool>(value);
+                    }
                 }
             }
         }
@@ -165,4 +176,4 @@ namespace Core
         const auto config = GetSingleton();
         return config->_impl;
     }
-}
+} // namespace Core

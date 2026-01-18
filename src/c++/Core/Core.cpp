@@ -21,8 +21,8 @@ namespace Core
 {
     auto OnDataLoaded() -> void
     {
-        auto& config = Config::Get();
-        if (config.PluginExplorer.Enable)
+        auto& [General, PluginExplorer, MainMenu, JournalMenu] = Config::Get();
+        if (PluginExplorer.Enable)
         {
             Menu::PluginExplorer::Init();
         }
@@ -33,7 +33,7 @@ namespace Core
         SKSE::log::info("Registering menus..."sv);
         if (const auto ui = RE::UI::GetSingleton())
         {
-            if (config.PluginExplorer.Enable)
+            if (PluginExplorer.Enable)
             {
                 ui->Register(Menu::PluginExplorerMenu::MENU_NAME, Menu::PluginExplorerMenu::Create);
             }
@@ -43,7 +43,7 @@ namespace Core
         if (const auto event = Event::EventManager::GetSingleton())
         {
             event->Register();
-            if (config.PluginExplorer.Enable)
+            if (PluginExplorer.Enable)
             {
                 event->Register(Menu::PluginExplorerHandler::GetSingleton());
             }
@@ -65,29 +65,36 @@ namespace Core
         {
             locale->SetLocale(config.General.Locale);
             locale->Load();
-            //locale->Dump();
+            // locale->Dump();
         }
 
         SKSE::log::info("Installing hooks...");
         if (config.JournalMenu.Enable)
+        {
             Menu::JournalMenuEx::Install();
+        }
 
         if (config.MainMenu.Enable)
+        {
             Menu::MainMenuEx::Install();
+        }
 
         SKSE::log::info("Registering listener...");
         if (const auto messaging = SKSE::GetMessagingInterface())
         {
             using Interface = SKSE::MessagingInterface;
-            messaging->RegisterListener("SKSE", [](Interface::Message* a_msg)
-            {
-                switch (a_msg->type)
-                {
-                case Interface::kDataLoaded:
-                    OnDataLoaded();
-                    break;
-                }
-            });
+            messaging->RegisterListener("SKSE",
+                                        [](Interface::Message* a_msg)
+                                        {
+                                            switch (a_msg->type)
+                                            {
+                                            case Interface::kDataLoaded:
+                                                OnDataLoaded();
+                                                break;
+                                            default:
+                                                break;
+                                            }
+                                        });
         }
     }
-}
+} // namespace Core

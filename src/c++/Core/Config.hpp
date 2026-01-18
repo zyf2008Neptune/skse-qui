@@ -1,13 +1,9 @@
 #pragma once
 
-#define TOML_EXCEPTIONS 0
-
 #include <cstdint>
 #include <string>
+#include <toml11/value.hpp>
 #include <unordered_map>
-#include <toml++/impl/node.h>
-#include <toml++/impl/node_view.h>
-#include <toml++/impl/parse_result.h>
 
 #include "src/c++/General/Singleton.hpp"
 
@@ -81,21 +77,18 @@ namespace Core::Private
             uint32_t DefaultPage{2u};
         } JournalMenu;
     };
-}
+} // namespace Core::Private
 
 namespace Core
 {
-    class Config final :
-        public ISingleton<Config>
+    struct Config final : ISingleton<Config>
     {
-    public:
         Config() = default;
 
         void Load();
         void Read();
 
-        auto GetNode(const char* a_path)
-            -> toml::node_view<toml::node>;
+        auto GetNode(const std::string& a_path) -> toml::value;
 
         void GetValue(const char* a_path, bool& a_value);
         void GetValue(const char* a_path, uint32_t& a_value);
@@ -105,10 +98,9 @@ namespace Core
 
         static Private::ConfigImpl& Get();
 
-    public:
-        toml::parse_result _result;
-        toml::parse_result _resultCustom;
+        toml::value _result;
+        toml::value _resultCustom;
 
         Private::ConfigImpl _impl;
     };
-}
+} // namespace Core

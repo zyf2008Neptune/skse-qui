@@ -7,21 +7,18 @@
       "name": "vcpkg-cmake-config",
       "host": true
     },
-    "pkgconf",
-    "rapidcsv",
-    "fmt",
-    "frozen",
-    "spdlog",
-    "tomlplusplus",
+    "catch2",
     "directxmath",
     "directxtk",
-    "xbyak",
-    "catch2"
-  ],
-  "overrides": [
+    "fmt",
+    "frozen",
+    "pkgconf",
+    "rapidcsv",
+    "spdlog",
     {
-      "name": "tomlplusplus",
-      "version": "3.1.0"
-    }
+      "name": "toml11",
+      "version>=": "4.4.0"
+    },
+    "xbyak"
   ]
 }
