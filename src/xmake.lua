@@ -1,5 +1,5 @@
 target("QUI")
-    add_packages("frozen", "toml++", "fmt", "spdlog", "my-commonlibsse-ng")
+    add_packages("frozen", "toml11", "fmt", "spdlog", "alandtse-CommonLib-ng")
 
     add_rules("@my-commonlibsse-ng/plugin", {
         name = "QUI",

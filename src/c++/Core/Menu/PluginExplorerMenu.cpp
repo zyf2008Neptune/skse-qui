@@ -21,30 +21,28 @@
 
 namespace Core::Menu
 {
-    PluginExplorerMenu::PluginExplorerMenu() :
-        Super(),
-        RE::MenuEventHandler()
+    PluginExplorerMenu::PluginExplorerMenu() : Super(), RE::MenuEventHandler()
     {
         auto menu = static_cast<Super*>(this);
         menu->inputContext = Context::kItemMenu;
         menu->depthPriority = SORT_PRIORITY;
-        menu->menuFlags.set(
-            Flag::kUsesMenuContext,
-            Flag::kDisablePauseMenu,
-            Flag::kAllowSaving,
-            Flag::kHasButtonBar,
-            Flag::kUsesMovementToDirection);
+        menu->menuFlags.set(Flag::kUsesMenuContext, Flag::kDisablePauseMenu, Flag::kAllowSaving, Flag::kHasButtonBar,
+                            Flag::kUsesMovementToDirection);
 
         auto& config = Config::Get();
         if (config.PluginExplorer.Pause)
+        {
             menu->menuFlags.set(Flag::kPausesGame);
+        }
 
         auto scaleform = RE::BSScaleformManager::GetSingleton();
-        bool success = scaleform->LoadMovieEx(menu, FILE_NAME, [](RE::GFxMovieDef* a_def) -> void
-        {
-            using StateType = RE::GFxState::StateType;
-            a_def->SetState(StateType::kLog, RE::make_gptr<SF::Logger<PluginExplorerMenu>>().get());
-        });
+        bool success = scaleform->LoadMovieEx(
+            menu, FILE_NAME,
+            [](RE::GFxMovieDef* a_def) -> void
+            {
+                using StateType = RE::GFxState::StateType;
+                a_def->SetState(StateType::kLog, RE::make_gptr<SF::Logger<PluginExplorerMenu>>().get());
+            });
 
         if (!success)
         {
@@ -69,8 +67,7 @@ namespace Core::Menu
         mc->RemoveHandler(this);
     }
 
-    auto PluginExplorerMenu::ProcessMessage(RE::UIMessage& a_message)
-        -> RE::UI_MESSAGE_RESULTS
+    auto PluginExplorerMenu::ProcessMessage(RE::UIMessage& a_message) -> RE::UI_MESSAGE_RESULTS
     {
         using Message = RE::UI_MESSAGE_TYPE;
         using Result = RE::UI_MESSAGE_RESULTS;
@@ -124,10 +121,14 @@ namespace Core::Menu
         using Type = RE::INPUT_EVENT_TYPE;
 
         if (!a_event)
+        {
             return false;
+        }
 
         if (!a_event->eventType.all(Type::kButton))
+        {
             return false;
+        }
 
         return true;
     }
@@ -144,20 +145,24 @@ namespace Core::Menu
             case Device::kKeyboard:
             {
                 using Key = RE::BSWin32KeyboardDevice::Key;
-                switch (a_event->idCode)
+                switch (a_event->GetIDCode())
                 {
                 case Key::kW:
                 case Key::kUp:
                 {
                     if (_upHeld > 0)
+                    {
                         _upHeld -= 1;
+                    }
                     break;
                 }
                 case Key::kS:
                 case Key::kDown:
                 {
                     if (_downHeld > 0)
+                    {
                         _downHeld -= 1;
+                    }
                     break;
                 }
                 }
@@ -166,18 +171,22 @@ namespace Core::Menu
             case Device::kGamepad:
             {
                 using Key = RE::BSWin32GamepadDevice::Key;
-                switch (a_event->idCode)
+                switch (a_event->GetIDCode())
                 {
                 case Key::kUp:
                 {
                     if (_upHeld > 0)
+                    {
                         _upHeld -= 1;
+                    }
                     break;
                 }
                 case Key::kDown:
                 {
                     if (_downHeld > 0)
+                    {
                         _downHeld -= 1;
+                    }
                     break;
                 }
                 }
@@ -192,7 +201,7 @@ namespace Core::Menu
             case Device::kKeyboard:
             {
                 using Key = RE::BSWin32KeyboardDevice::Key;
-                switch (a_event->idCode)
+                switch (a_event->GetIDCode())
                 {
                 case Key::kD:
                 case Key::kRight:
@@ -231,7 +240,7 @@ namespace Core::Menu
             case Device::kMouse:
             {
                 using Key = RE::BSWin32MouseDevice::Key;
-                switch (a_event->idCode)
+                switch (a_event->GetIDCode())
                 {
                 case Key::kLeftButton:
                     Select();
@@ -251,7 +260,7 @@ namespace Core::Menu
             case Device::kGamepad:
             {
                 using Key = RE::BSWin32GamepadDevice::Key;
-                switch (a_event->idCode)
+                switch (a_event->GetIDCode())
                 {
                 case Key::kA:
                     Select();
@@ -313,13 +322,11 @@ namespace Core::Menu
     void PluginExplorerMenu::Init()
     {
         using element_t = std::pair<std::reference_wrapper<SF::Object>, std::string_view>;
-        std::array objects{
-            element_t{std::ref(_rootObj), "_root.rootObj"sv},
-            element_t{std::ref(_title), "_root.rootObj.title"sv},
-            element_t{std::ref(_pluginList), "_root.rootObj.itemList"sv},
-            element_t{std::ref(_formList), "_root.rootObj.formList"sv},
-            element_t{std::ref(_buttonBar), "_root.rootObj.buttonBar"sv}
-        };
+        std::array objects{element_t{std::ref(_rootObj), "_root.rootObj"sv},
+                           element_t{std::ref(_title), "_root.rootObj.title"sv},
+                           element_t{std::ref(_pluginList), "_root.rootObj.itemList"sv},
+                           element_t{std::ref(_formList), "_root.rootObj.formList"sv},
+                           element_t{std::ref(_buttonBar), "_root.rootObj.buttonBar"sv}};
 
         for (const auto& [object, path] : objects)
         {
@@ -367,7 +374,7 @@ namespace Core::Menu
         using UEFlag = RE::ControlMap::UEFlag;
         if (const auto control = RE::ControlMap::GetSingleton())
         {
-            control->ToggleControls(UEFlag::kPOVSwitch, false);
+            control->ToggleControls(UEFlag::kPOVSwitch, false, false);
         }
 
         if (const auto queue = RE::UIMessageQueue::GetSingleton())
@@ -381,7 +388,7 @@ namespace Core::Menu
         using UEFlag = RE::ControlMap::UEFlag;
         if (const auto control = RE::ControlMap::GetSingleton())
         {
-            control->ToggleControls(UEFlag::kPOVSwitch, true);
+            control->ToggleControls(UEFlag::kPOVSwitch, true, false);
         }
 
         if (const auto queue = RE::UIMessageQueue::GetSingleton())
@@ -425,8 +432,7 @@ namespace Core::Menu
         auto& plugins = PluginExplorer::GetPlugins();
         for (auto& [index, plugin] : plugins)
         {
-            if (plugin.GetCount() == 0)
-                continue;
+            if (plugin.GetCount() == 0) continue;
 
             auto itemPlugin = std::make_shared<Item::ItemPlugin>(index, plugin.GetName(), plugin.GetCount());
             _pluginList.push_back(itemPlugin);
@@ -438,8 +444,7 @@ namespace Core::Menu
 
     void PluginExplorerMenu::RefreshForms()
     {
-        if (_pluginName.empty())
-            return;
+        if (_pluginName.empty()) return;
 
         const auto idx = _formList.SelectedIndex();
         _formList.clear();
@@ -584,8 +589,7 @@ namespace Core::Menu
 
     void PluginExplorerMenu::UpdateButtonBar()
     {
-        if (!_view)
-            return;
+        if (!_view) { return; }
 
         uint32_t indexAccept;
         uint32_t indexCancel;
@@ -618,10 +622,14 @@ namespace Core::Menu
 
         makeButton(indexAccept, "sAccept");
         if (_focus == Focus::Plugin)
+        {
             makeButton(indexCancel, "sCancel");
+        }
         else
+        {
             makeButton(indexCancel, "sBack");
+        }
 
         _buttonBar.InvalidateData();
     }
-}
+} // namespace Core::Menu

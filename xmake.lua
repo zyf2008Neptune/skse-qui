@@ -25,15 +25,15 @@ set_toolchains("clang-cl")
 
 -- packages
 
-add_requires("fmt", "frozen", "toml++")
+add_requires("fmt", "frozen", "toml11")
 add_requires("spdlog", { configs = { header_only = false } })
 
-package("my-commonlibsse-ng")
+package("alandtse-CommonLib-ng")
     set_base("commonlibsse-ng")
-    set_urls("https://github.com/zyf2008Neptune/CommonLibSSE-NG.git")
+    set_urls("https://github.com/alandtse/CommonLibVR/tree/ng.git")
 package_end()
 
-add_requires("my-commonlibsse-ng main", {alias ="commonlibsse-ng", configs = { skyrim_vr = false , skyrim_se = false }})
+add_requires("alandtse-CommonLib-ng ng", {alias ="commonlibsse-ng", configs = { skyrim_vr = false , skyrim_se = false }})
 	
 includes("res/package.lua")
 includes("src")

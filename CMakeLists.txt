@@ -19,9 +19,9 @@ file(GLOB_RECURSE project_files
 include(FetchContent)
 FetchContent_Declare(
   CommonLibSSE
-  GIT_REPOSITORY https://github.com/zyf2008Neptune/CommonLibSSE-NG
+  GIT_REPOSITORY https://github.com/alandtse/CommonLibVR
 
-  GIT_TAG        main
+  GIT_TAG        ng
  
 )
 FetchContent_MakeAvailable(CommonLibSSE)
@@ -41,11 +41,9 @@ list(APPEND DEP fmt::fmt)
 find_package(frozen CONFIG REQUIRED)
 list(APPEND DEP frozen::frozen frozen::frozen-headers)
 
-
-#toml++
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(tomlplusplus REQUIRED IMPORTED_TARGET tomlplusplus)
-list(APPEND DEP PkgConfig::tomlplusplus)
+#toml11
+find_package(toml11 CONFIG REQUIRED)
+list(APPEND DEP toml11::toml11)
 
 # spdlog
 find_package(spdlog CONFIG REQUIRED)
