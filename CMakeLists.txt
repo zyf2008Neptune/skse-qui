@@ -8,37 +8,24 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(PROJECT_ROOT ${CMAKE_SOURCE_DIR})
 
-add_subdirectory(Commonlib CommonLibSSE)
+#add_subdirectory(Commonlib CommonLibSSE)
 
 file(GLOB_RECURSE project_files
-    src/c++/core/console/*
-    src/c++/core/event/*
-    src/c++/core/locale/*
-    src/c++/core/menu/items/*
-    src/c++/core/menu/*
-    src/c++/core/*
-    src/c++/general/*
-    src/c++/Scaleform/CLIK/GFx/Controls/*
-    src/c++/Scaleform/CLIK/GFx/Core/*
-    src/c++/Scaleform/common/*
-    src/c++/Scaleform/system/*
-    src/c++/Scaleform/*
-    src/c++/main.cpp
-	src/c++/plugininfo.cpp
+    src/*.*
 )
 
 
 #CommonLibSSE
-#include(FetchContent)
-#FetchContent_Declare(
-#  CommonLibSSE
-#  GIT_REPOSITORY https://github.com/zyf2008Neptune/CommonLibSSE-NG
+include(FetchContent)
+FetchContent_Declare(
+  CommonLibSSE
+  GIT_REPOSITORY https://github.com/zyf2008Neptune/CommonLibSSE-NG
 
-#  GIT_TAG        main
+  GIT_TAG        main
  
-#)
-#FetchContent_MakeAvailable(CommonLibSSE)
-#find_package(CommonLibSSE CONFIG REQUIRED)
+)
+FetchContent_MakeAvailable(CommonLibSSE)
+
 list(APPEND DEP CommonLibSSE::CommonLibSSE)
 
 #to do

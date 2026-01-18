@@ -10,33 +10,30 @@ set_warnings("allextra", "error")
 
 -- allowed
 set_allowedarchs("x64")
-set_allowedmodes("releasedbg")
+set_allowedmodes("release","debug")
 
 -- default
 set_defaultarchs("x64")
-set_defaultmode("releasedbg")
+set_defaultmode("release")
 
 -- rules
 add_rules("mode.releasedbg")
 add_rules("plugin.vsxmake.autoupdate")
 
 -- toolchains
-set_toolchains("llvm")
+set_toolchains("clang-cl")
 
 -- packages
 
 add_requires("fmt", "frozen", "toml++")
 add_requires("spdlog", { configs = { header_only = false } })
---includes("commonlibsse")
---add_repositories("my-commonlibsse-ng https://github.com/alandtse/CommonLibVR.git ng")
---add_requires("my-commonlibsse-ng", { configs = { skyrim_vr = false , skyrim_se = false }})
 
 package("my-commonlibsse-ng")
     set_base("commonlibsse-ng")
-    set_urls("https://github.com/zyf2008Neptune/CommonLibSSE-NG")
+    set_urls("https://github.com/zyf2008Neptune/CommonLibSSE-NG.git")
 package_end()
 
-add_requires("my-commonlibsse-ng", {alias ="commonlibsse-ng", configs = { skyrim_vr = false , skyrim_se = false }})
+add_requires("my-commonlibsse-ng main", {alias ="commonlibsse-ng", configs = { skyrim_vr = false , skyrim_se = false }})
 	
 includes("res/package.lua")
 includes("src")
