@@ -21,7 +21,7 @@ add_rules("mode.releasedbg")
 add_rules("plugin.vsxmake.autoupdate")
 
 -- toolchains
-set_toolchains("clang-cl")
+set_toolchains("msvc")
 
 -- packages
 

@@ -8,25 +8,47 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(PROJECT_ROOT ${CMAKE_SOURCE_DIR})
 
-#add_subdirectory(Commonlib CommonLibSSE)
+set(SKSE_SUPPORT_XBYAK ON)
+set(ENABLE_SKYRIM_SE OFF)
+set(ENABLE_SKYRIM_VR OFF)
+set(BUILD_TESTS OFF)
 
-file(GLOB_RECURSE project_files
-    src/*.*
+add_subdirectory(Commonlib)
+
+include(Commonlib/cmake/CommonLibSSE.cmake)
+
+file(GLOB_RECURSE headers
+    src/*.h
+	src/*.hpp
 )
 
+file(GLOB_RECURSE sources
+    src/*.cc
+	src/*.cpp
+)
+
+add_commonlibsse_plugin(
+  ${PROJECT_NAME}
+  AUTHOR Qudix
+  SOURCES ${headers} ${sources}
+)
+
+add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+
+set(project_files ${headers} ${sources})
 
 #CommonLibSSE
-include(FetchContent)
-FetchContent_Declare(
-  CommonLibSSE
-  GIT_REPOSITORY https://github.com/alandtse/CommonLibVR
+#include(FetchContent)
+#FetchContent_Declare(
+#  CommonLibSSE
+#  GIT_REPOSITORY https://github.com/alandtse/CommonLibVR
 
-  GIT_TAG        ng
+#  GIT_TAG        ng
  
-)
-FetchContent_MakeAvailable(CommonLibSSE)
+#)
+#FetchContent_MakeAvailable(CommonLibSSE)
 
-list(APPEND DEP CommonLibSSE::CommonLibSSE)
+#list(APPEND DEP CommonLibSSE::CommonLibSSE)
 
 #to do
 #add custom vcpkg port of commlibsse
@@ -50,10 +72,9 @@ find_package(spdlog CONFIG REQUIRED)
 list(APPEND DEP spdlog::spdlog)
 
 #add_commonlibsse_plugin(${PROJECT_NAME} SOURCES ${project_files})
-add_library(${PROJECT_NAME} SHARED ${project_files})
+#add_library(${PROJECT_NAME} SHARED ${project_files})
 
-
-target_link_libraries(${PROJECT_NAME} ${DEP})
+#target_link_libraries(${PROJECT_NAME} ${DEP})
 
 if(MSVC)
 	target_compile_options(
