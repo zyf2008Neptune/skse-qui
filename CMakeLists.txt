@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.27)
 
 project(QUI	LANGUAGES CXX)
-set(PROJECT_VERSION 0.3.3)
+set(PROJECT_VERSION 0.4.0)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -9,7 +9,6 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(PROJECT_ROOT ${CMAKE_SOURCE_DIR})
 
 set(SKSE_SUPPORT_XBYAK ON)
-set(ENABLE_SKYRIM_SE OFF)
 set(ENABLE_SKYRIM_VR OFF)
 set(BUILD_TESTS OFF)
 
@@ -33,9 +32,11 @@ add_commonlibsse_plugin(
   SOURCES ${headers} ${sources}
 )
 
+set(project_files ${headers} ${sources})
+
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
-set(project_files ${headers} ${sources})
+#add_library(${PROJECT_NAME} SHARED ${project_files})
 
 #CommonLibSSE
 #include(FetchContent)
@@ -48,6 +49,7 @@ set(project_files ${headers} ${sources})
 #)
 #FetchContent_MakeAvailable(CommonLibSSE)
 
+#find_package(CommonLibSSE CONFIG REQUIRED)
 #list(APPEND DEP CommonLibSSE::CommonLibSSE)
 
 #to do
@@ -63,18 +65,16 @@ list(APPEND DEP fmt::fmt)
 find_package(frozen CONFIG REQUIRED)
 list(APPEND DEP frozen::frozen frozen::frozen-headers)
 
-#toml11
-find_package(toml11 CONFIG REQUIRED)
-list(APPEND DEP toml11::toml11)
+#toml++
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(tomlplusplus REQUIRED IMPORTED_TARGET tomlplusplus)
+list(APPEND DEP PkgConfig::tomlplusplus)
 
 # spdlog
 find_package(spdlog CONFIG REQUIRED)
 list(APPEND DEP spdlog::spdlog)
 
-#add_commonlibsse_plugin(${PROJECT_NAME} SOURCES ${project_files})
-#add_library(${PROJECT_NAME} SHARED ${project_files})
-
-#target_link_libraries(${PROJECT_NAME} ${DEP})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${DEP})
 
 if(MSVC)
 	target_compile_options(

@@ -1,8 +1,13 @@
 #pragma once
 
+#define TOML_EXCEPTIONS 0
+
 #include <cstdint>
 #include <string>
-#include <toml11/value.hpp>
+#include <toml++/impl/node.h>
+#include <toml++/impl/node_view.h>
+#include <toml++/impl/parse_result.h>
+#include <vector>
 #include <unordered_map>
 
 #include "src/c++/General/Singleton.hpp"
@@ -85,21 +90,21 @@ namespace Core
     {
         Config() = default;
 
-        void Load();
-        void Read();
+        auto Load() -> void;
+        auto Read() -> void;
 
-        auto GetNode(const std::string& a_path) -> toml::value;
+        auto GetNode(const char* a_path) -> toml::node_view<toml::node>;
 
-        void GetValue(const char* a_path, bool& a_value);
-        void GetValue(const char* a_path, uint32_t& a_value);
-        void GetValue(const char* a_path, float& a_value);
-        void GetValue(const char* a_path, std::string& a_value);
-        void GetValue(const char* a_path, std::unordered_map<std::string, bool>& a_value);
+        auto GetValue(const char* a_path, bool& a_value) -> void;
+        auto GetValue(const char* a_path, uint32_t& a_value) -> void;
+        auto GetValue(const char* a_path, float& a_value) -> void;
+        auto GetValue(const char* a_path, std::string& a_value) -> void;
+        auto GetValue(const char* a_path, std::unordered_map<std::string, bool>& a_value) -> void;
 
-        static Private::ConfigImpl& Get();
+        static auto Get() -> Private::ConfigImpl&;
 
-        toml::value _result;
-        toml::value _resultCustom;
+        toml::parse_result _result;
+        toml::parse_result _resultCustom;
 
         Private::ConfigImpl _impl;
     };

@@ -1,4 +1,4 @@
-name: Main CI
+﻿name: Main CI
 
 on:
   push:
@@ -7,44 +7,53 @@ on:
       - '.github/workflows/main_ci.yml'
       - 'res/**'
       - 'src/**'
-      - 'xmake.lua'
+      - 'CMakeLists.txt'
+      - 'CMakePresets.json'
+      - 'vcpkg.json'
       
   pull_request:
     branches: [ main ]
+      
+  workflow_dispatch:
 
 jobs:
-  windows:
+  build-and-test-vcpkg:
     runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        build-type:
+          - release
+        compiler:
+          - msvc
+          
     steps:
-      - uses: actions/checkout@master
-
-      - name: Setup XMake
-        uses: xmake-io/github-action-setup-xmake@master
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          xmake-version: branch@dev
+          path: main
+          submodules: recursive
 
-      - name: Setup XMake (Global)
+      - name: Extract vcpkg baseline from vcpkg.json
+        id: get_vcpkg_baseline
+        shell: pwsh
         run: |
-          xmake repo --update
-          echo "GLOBAL_XMAKE=$env:LOCALAPPDATA/.xmake/" >> $env:GITHUB_ENV
+          $vcpkgJson = Get-Content main/vcpkg.json | ConvertFrom-Json
+          $baseline = $vcpkgJson.'builtin-baseline'
+          echo "baseline=$baseline" >> $env:GITHUB_OUTPUT
+          echo "✓ Using vcpkg baseline from vcpkg.json: $baseline"
 
-      - name: Setup Packages (Hash)
-        id: packages_key
-        run: |
-          echo "hash=$(xmake l utils.ci.packageskey)" >> $env:GITHUB_OUTPUT
+      - name: Setup MSVC Environment
+        uses: ilammy/msvc-dev-cmd@v1
 
-      - name: Setup Packages (Cache)
-        uses: actions/cache@v3
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
         with:
-          path: ${{ env.GLOBAL_XMAKE }}/packages
-          key: ${{ steps.packages_key.outputs.hash }}
+          vcpkgGitCommitId: ${{ steps.get_vcpkg_baseline.outputs.baseline }}
 
-      - name: Build and Package
-        run: |
-          xmake package -y
-
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@master
+      - name: Build
+        uses: lukka/run-cmake@v10
         with:
-          name: build
-          path: ${{ github.workspace }}/build/packages/**/*.zip
+          cmakeListsTxtPath: ${{ github.workspace }}/main/CMakeLists.txt
+          configurePreset: build-${{ matrix.build-type }}-${{ matrix.compiler }}-vcpkg-${{ matrix.runtime }}
+          buildPreset: ${{ matrix.build-type }}-${{ matrix.compiler }}-vcpkg-${{ matrix.runtime }}

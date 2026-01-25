@@ -11,56 +11,49 @@
 #include <sstream>
 #include <string_view>
 #include <string>
-#include <toml11/exception.hpp>
-#include <toml11/parser.hpp>
-#include <toml11/value.hpp>
+#include <toml++/impl/key.h>
+#include <toml++/impl/node.h>
+#include <toml++/impl/node.inl>
+#include <toml++/impl/node_view.h>
+#include <toml++/impl/parser.inl>
+#include <toml++/impl/parse_error.h>
+#include <toml++/impl/parse_result.h>
 #include <unordered_map>
 
 namespace Core
 {
-    void Config::Load()
+    auto Config::Load() -> void
     {
         auto plugin = SKSE::PluginDeclaration::GetSingleton();
         auto path = fmt::format("Data/SKSE/Plugins/{}.toml"sv, plugin->GetName());
         auto pathCustom = fmt::format("Data/SKSE/Plugins/{}_Custom.toml"sv, plugin->GetName());
 
-        if (std::filesystem::exists(path))
+        _result = toml::parse_file(path);
+        if (!_result)
         {
-            try
-            {
-                _result = toml::parse(path);
-            }
-            catch (const toml::syntax_error& err)
-            {
-                SKSE::log::info("Default file failed!");
-                std::ostringstream ss;
-                ss << "Failed to load config:\n"
-                    << "Error parsing file:\n"
-                    << err.what() << "\n";
-                SKSE::log::error("{}", ss.str());
-                stl::report_and_fail(ss.str());
-            }
+            SKSE::log::info("Default file failed!");
+            std::ostringstream ss;
+            ss << "Failed to load config:\n"
+                << "Error parsing file:\n"
+                << _result.error() << "\n";
+            SKSE::log::error("{}", ss.str());
+            stl::report_and_fail(ss.str());
         }
 
-        if (std::filesystem::exists(pathCustom))
+        _resultCustom = toml::parse_file(pathCustom);
+        bool exists = std::filesystem::exists(pathCustom);
+        if (!_resultCustom && exists)
         {
-            try
-            {
-                _resultCustom = toml::parse(pathCustom);
-            }
-            catch (const toml::syntax_error& err)
-            {
-                std::ostringstream ss;
-                ss << "Failed to load custom config:\n"
-                    << "Error parsing file:\n"
-                    << err.what() << "\n";
-                SKSE::log::error("{}", ss.str());
-                stl::report_and_fail(ss.str());
-            }
+            std::ostringstream ss;
+            ss << "Failed to load custom config:\n"
+                << "Error parsing file:\n"
+                << _resultCustom.error() << "\n";
+            SKSE::log::error("{}", ss.str());
+            stl::report_and_fail(ss.str());
         }
     }
 
-    void Config::Read()
+    auto Config::Read() -> void
     {
         _impl = {};
 
@@ -96,21 +89,23 @@ namespace Core
         GetValue("JournalMenu.DefaultPage", _impl.JournalMenu.DefaultPage);
     }
 
-    auto Config::GetNode(const std::string& a_path) -> toml::value
+    auto Config::GetNode(const char* a_path) -> toml::node_view<toml::node>
     {
-        if (_resultCustom.is_empty())
+        if (_resultCustom)
         {
-            auto& node = _resultCustom.at(a_path);
-            if (!node.is_empty())
+            auto& table = _resultCustom.table();
+            auto node = table.at_path(a_path);
+            if (node)
             {
                 return node;
             }
         }
 
-        if (!_result.is_empty())
+        if (_result)
         {
-            auto& node = _result.at(a_path);
-            if (!node.is_empty())
+            auto& table = _result.table();
+            auto node = table.at_path(a_path);
+            if (node)
             {
                 return node;
             }
@@ -119,59 +114,62 @@ namespace Core
         return {};
     }
 
-    void Config::GetValue(const char* a_path, bool& a_value)
+    auto Config::GetValue(const char* a_path, bool& a_value) -> void
     {
         auto node = GetNode(a_path);
+        if (node && node.is_boolean())
         {
-            if (node.is_boolean()) { a_value = toml::get<bool>(node); }
+            a_value = node.value_or(a_value);
         }
     }
 
-    void Config::GetValue(const char* a_path, uint32_t& a_value)
+    auto Config::GetValue(const char* a_path, uint32_t& a_value) -> void
     {
         auto node = GetNode(a_path);
-        if (node.is_integer())
+        if (node && node.is_integer())
         {
-            auto val = toml::get<int64_t>(node);
-            a_value = static_cast<uint32_t>(val);
+            a_value = node.value_or(a_value);
         }
     }
 
-    void Config::GetValue(const char* a_path, float& a_value)
+    auto Config::GetValue(const char* a_path, float& a_value) -> void
     {
         auto node = GetNode(a_path);
+        if (node && node.is_floating_point())
         {
-            if (node.is_floating()) { a_value = static_cast<float>(toml::get<double>(node)); }
+            a_value = node.value_or(a_value);
         }
     }
 
-    void Config::GetValue(const char* a_path, std::string& a_value)
+    auto Config::GetValue(const char* a_path, std::string& a_value) -> void
     {
         auto node = GetNode(a_path);
+        if (node && node.is_string())
         {
-            if (node.is_string()) { a_value = toml::get<std::string>(node); }
+            a_value = node.value_or(a_value);
         }
     }
 
-    void Config::GetValue(const char* a_path, std::unordered_map<std::string, bool>& a_value)
+    auto Config::GetValue(const char* a_path, std::unordered_map<std::string, bool>& a_value) -> void
     {
         auto node = GetNode(a_path);
-        if (node.is_table())
+        if (node)
         {
-            auto& table = toml::get<toml::table>(node);
-            for (const auto& [key, value] : table)
+            if (node.is_table())
             {
+                for (const auto& [key, value] : *node.as_table())
                 {
-                    if (value.is_boolean() && !key.empty())
+                    auto opt = value.value<bool>();
+                    if (opt && !key.empty())
                     {
-                        a_value[key] = toml::get<bool>(value);
+                        a_value[key.data()] = opt.value();
                     }
                 }
             }
         }
     }
 
-    Private::ConfigImpl& Config::Get()
+    auto Config::Get() -> Private::ConfigImpl&
     {
         const auto config = GetSingleton();
         return config->_impl;

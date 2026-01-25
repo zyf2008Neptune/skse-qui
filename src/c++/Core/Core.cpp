@@ -91,8 +91,6 @@ namespace Core
                                             case Interface::kDataLoaded:
                                                 OnDataLoaded();
                                                 break;
-                                            default:
-                                                break;
                                             }
                                         });
         }
