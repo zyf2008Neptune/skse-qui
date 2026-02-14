@@ -13,23 +13,23 @@ namespace Core
     public:
         LocalePackage() = default;
 
-        void Load();
-        void Load(const std::wstring& a_lang);
+        auto Load() -> void;
+        auto Load(const std::wstring& a_lang) -> void;
 
-        std::optional<std::wstring> FindItem(const std::wstring& a_key);
+        auto FindItem(const std::wstring& a_key) -> std::optional<std::wstring>;
 
-        void Dump();
+        auto Dump() -> void;
 
     public:
-        bool empty() const noexcept { return _items.empty(); }
+        auto empty() const noexcept -> bool { return _items.empty(); };
 
     private:
-        void LoadFiles();
-        void ReadFile(const std::filesystem::path& a_path);
+        auto LoadFiles() -> void;
+        auto ReadFile(const std::filesystem::path& a_path) -> void;
 
     private:
         std::wstring _language{L"ENGLISH"};
         std::wregex _regex;
         Items _items;
     };
-}
+} // namespace Core

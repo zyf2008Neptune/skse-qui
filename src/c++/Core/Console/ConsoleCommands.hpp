@@ -13,10 +13,10 @@ namespace Core::ConsoleCommand
         static constexpr auto SHORT_NAME = "";
         static constexpr auto HELP_STR = "\"Clear\"";
 
-        static void Register();
+        static auto Register() -> void;
 
     private:
-        static bool Execute(
+        static auto Execute(
             const RE::SCRIPT_PARAMETER* a_paramInfo,
             RE::SCRIPT_FUNCTION::ScriptData* a_scriptData,
             RE::TESObjectREFR* a_thisObj,
@@ -24,8 +24,8 @@ namespace Core::ConsoleCommand
             RE::Script* a_scriptObj,
             RE::ScriptLocals* a_locals,
             double& a_result,
-            uint32_t& a_opcodeOffsetPtr);
+            uint32_t& a_opcodeOffsetPtr) -> bool;
     };
 
-    void Register();
+    auto Register() -> void;
 }

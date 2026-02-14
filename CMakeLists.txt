@@ -65,10 +65,9 @@ list(APPEND DEP fmt::fmt)
 find_package(frozen CONFIG REQUIRED)
 list(APPEND DEP frozen::frozen frozen::frozen-headers)
 
-#toml++
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(tomlplusplus REQUIRED IMPORTED_TARGET tomlplusplus)
-list(APPEND DEP PkgConfig::tomlplusplus)
+#toml11
+find_package(toml11 CONFIG REQUIRED)
+list(APPEND DEP toml11::toml11)
 
 # spdlog
 find_package(spdlog CONFIG REQUIRED)

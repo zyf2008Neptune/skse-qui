@@ -8,7 +8,7 @@
 
 namespace Core::ConsoleCommand
 {
-    void Clear::Register()
+    auto Clear::Register() -> void
     {
         const auto info = RE::SCRIPT_FUNCTION::LocateConsoleCommand("DumpNiUpdates");
         if (!info)
@@ -27,8 +27,9 @@ namespace Core::ConsoleCommand
         info->referenceFunction = false;
     }
 
-    bool Clear::Execute(const RE::SCRIPT_PARAMETER*, RE::SCRIPT_FUNCTION::ScriptData*,
-                        RE::TESObjectREFR*, RE::TESObjectREFR*, RE::Script*, RE::ScriptLocals*, double&, uint32_t&)
+    auto Clear::Execute(const RE::SCRIPT_PARAMETER*, RE::SCRIPT_FUNCTION::ScriptData*,
+                        RE::TESObjectREFR*, RE::TESObjectREFR*, RE::Script*, RE::ScriptLocals*, double&,
+                        uint32_t&) -> bool
     {
         const auto task = SKSE::GetTaskInterface();
         task->AddUITask([]
@@ -37,13 +38,15 @@ namespace Core::ConsoleCommand
             const auto console = ui ? ui->GetMenu<RE::Console>() : nullptr;
             const auto movie = console ? console->uiMovie : nullptr;
             if (movie)
+            {
                 movie->Invoke("Console.ClearHistory", nullptr, nullptr, 0);
+            }
         });
 
         return true;
     }
 
-    void Register()
+    auto Register() -> void
     {
         Clear::Register();
     }

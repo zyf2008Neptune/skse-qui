@@ -10,17 +10,15 @@
 
 namespace Core
 {
-    LocaleManager::LocaleManager()
-    {
-    }
+    LocaleManager::LocaleManager() {}
 
-    void LocaleManager::Load()
+    auto LocaleManager::Load() -> void
     {
         _packageENG.Load();
         _packageLOC.Load(_locale);
     }
 
-    bool LocaleManager::SetLocale(const std::string& a_locale)
+    auto LocaleManager::SetLocale(const std::string& a_locale) -> bool
     {
         if (a_locale.empty())
         {
@@ -41,7 +39,7 @@ namespace Core
         return true;
     }
 
-    std::string LocaleManager::Translate(const std::string& a_key)
+    auto LocaleManager::Translate(const std::string& a_key) -> std::string
     {
         if (!a_key.empty() && a_key[0] == '$')
         {
@@ -51,18 +49,18 @@ namespace Core
         return a_key;
     }
 
-    void LocaleManager::Dump()
+    auto LocaleManager::Dump() -> void
     {
         auto& package = GetLocalePackage();
         package.Dump();
     }
 
-    std::wstring LocaleManager::GetLocalization(const std::wstring& a_key)
+    auto LocaleManager::GetLocalization(const std::wstring& a_key) -> std::wstring
     {
         return GetLocalizationImpl(a_key);
     }
 
-    std::string LocaleManager::GetLocalization(const std::string& a_key)
+    auto LocaleManager::GetLocalization(const std::string& a_key) -> std::string
     {
         auto wstr = stl::utf8_to_utf16(a_key);
         if (wstr)
@@ -75,28 +73,34 @@ namespace Core
         return a_key;
     }
 
-    LocalePackage& LocaleManager::GetLocalePackage()
-    {
-        return _packageLOC.empty() ? _packageENG : _packageLOC;
-    }
+    auto LocaleManager::GetLocalePackage() -> LocalePackage& { return _packageLOC.empty() ? _packageENG : _packageLOC; }
 
-    std::wstring LocaleManager::GetLocalizationImpl(const std::wstring& a_key)
+    auto LocaleManager::GetLocalizationImpl(const std::wstring& a_key) -> std::wstring
     {
         if (a_key.empty() || a_key[0] != L'$')
+        {
             return a_key;
+        }
 
         auto sanitizedKey = Locale::SanitizeKey(a_key);
         if (!sanitizedKey)
+        {
             return a_key;
+        }
 
         auto localization = FindLocalization(*sanitizedKey);
         if (!localization)
+        {
             return a_key;
+        }
 
         std::stack<size_type> stack;
         std::queue<std::wstring> queue;
+
         if (!GetNestedLocalizations(a_key, stack, queue))
+        {
             return *localization;
+        }
 
         while (!stack.empty())
         {
@@ -107,7 +111,7 @@ namespace Core
         return *localization;
     }
 
-    std::optional<std::wstring> LocaleManager::FindLocalization(const std::wstring& a_key)
+    auto LocaleManager::FindLocalization(const std::wstring& a_key) -> std::optional<std::wstring>
     {
         auto& package = GetLocalePackage();
         auto item = package.FindItem(a_key);
@@ -128,24 +132,26 @@ namespace Core
         return item;
     }
 
-    bool LocaleManager::GetNestedLocalizations(
-        const std::wstring& a_key,
-        std::stack<size_type>& a_stack,
-        std::queue<std::wstring>& a_queue)
+    auto LocaleManager::GetNestedLocalizations(const std::wstring& a_key, std::stack<size_type>& a_stack,
+                                               std::queue<std::wstring>& a_queue) -> bool
     {
         for (size_type pos = 0; pos < a_key.size(); ++pos)
         {
             switch (a_key[pos])
             {
             case L'{':
+            {
                 a_stack.push(pos);
                 break;
+            }
             case L'}':
             {
                 switch (a_stack.size())
                 {
                 case 0:
+                {
                     return false;
+                }
                 case 1:
                 {
                     size_type last = a_stack.top();
@@ -159,50 +165,58 @@ namespace Core
                     auto subStr = a_key.substr(off, count);
                     auto locale = GetLocalizationImpl(subStr);
                     a_queue.push(locale);
+
+                    break;
                 }
-                break;
                 default:
+                {
                     a_stack.pop();
+                    break;
                 }
-                break;
+                }
+            default:
+            {
+                // break;
             }
-            default: ;
+            }
             }
         }
-
         return true;
     }
 
-    bool LocaleManager::InsertLocalizations(
-        std::wstring& a_localization,
-        std::stack<size_type>& a_stack,
-        std::queue<std::wstring>& a_queue)
+    auto LocaleManager::InsertLocalizations(std::wstring& a_localization, std::stack<size_type>& a_stack,
+                                            std::queue<std::wstring>& a_queue) -> bool
     {
         for (size_type pos = 0; pos < a_localization.size(); ++pos)
         {
             switch (a_localization[pos])
             {
             case L'{':
+            {
                 a_stack.push(pos);
                 break;
+            }
             case L'}':
             {
                 if (a_stack.empty() || a_queue.empty())
+                {
                     return false;
-
+                }
                 size_type beg = a_stack.top();
                 a_stack.pop();
                 auto& subStr = a_queue.front();
                 a_queue.pop();
-
                 a_localization.replace(beg, pos - beg + 1, subStr);
                 pos = beg;
+
+                break;
             }
-            break;
-            default: ;
+            default:
+            {
+            }
             }
         }
 
         return true;
     }
-}
+} // namespace Core

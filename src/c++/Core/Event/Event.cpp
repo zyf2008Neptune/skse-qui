@@ -8,7 +8,7 @@
 
 namespace Core::Event
 {
-    void EventManager::Register()
+    auto EventManager::Register() -> void
     {
         if (const auto ui = RE::UI::GetSingleton())
         {
@@ -23,16 +23,15 @@ namespace Core::Event
         }
     }
 
-    void EventManager::Register(IEventHandler* a_handler)
-    {
-        _handlers.push_back(a_handler);
-    }
+    auto EventManager::Register(IEventHandler* a_handler) -> void { _handlers.push_back(a_handler); }
 
-    EventResult EventManager::ProcessEvent(const RE::MenuOpenCloseEvent* a_event,
-                                           RE::BSTEventSource<RE::MenuOpenCloseEvent>*)
+    auto EventManager::ProcessEvent(const RE::MenuOpenCloseEvent* a_event, RE::BSTEventSource<RE::MenuOpenCloseEvent>*)
+        -> EventResult
     {
         if (!a_event)
+        {
             return EventResult::kContinue;
+        }
 
         for (auto& callback : _handlers)
         {
@@ -42,10 +41,12 @@ namespace Core::Event
         return EventResult::kContinue;
     }
 
-    EventResult EventManager::ProcessEvent(RE::InputEvent* const* a_event, RE::BSTEventSource<RE::InputEvent*>*)
+    auto EventManager::ProcessEvent(RE::InputEvent* const* a_event, RE::BSTEventSource<RE::InputEvent*>*) -> EventResult
     {
         if (!a_event)
+        {
             return EventResult::kContinue;
+        }
 
         for (auto& callback : _handlers)
         {
@@ -54,4 +55,4 @@ namespace Core::Event
 
         return EventResult::kContinue;
     }
-}
+} // namespace Core::Event
