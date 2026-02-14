@@ -4,10 +4,8 @@
 
 #include <cstdint>
 #include <string>
-#include <toml++/impl/node.h>
-#include <toml++/impl/node_view.h>
-#include <toml++/impl/parse_result.h>
-#include <vector>
+#include <toml11/value.hpp>
+
 #include <unordered_map>
 
 #include "src/c++/General/Singleton.hpp"
@@ -92,19 +90,18 @@ namespace Core
 
         auto Load() -> void;
         auto Read() -> void;
+        auto GetResult() const -> toml::value;
 
-        auto GetNode(const char* a_path) -> toml::node_view<toml::node>;
-
-        auto GetValue(const char* a_path, bool& a_value) -> void;
-        auto GetValue(const char* a_path, uint32_t& a_value) -> void;
-        auto GetValue(const char* a_path, float& a_value) -> void;
-        auto GetValue(const char* a_path, std::string& a_value) -> void;
-        auto GetValue(const char* a_path, std::unordered_map<std::string, bool>& a_value) -> void;
+        static auto GetValue(const toml::value& node, bool& value) -> void;
+        static auto GetValue(const toml::value& node, uint32_t& value) -> void;
+        static auto GetValue(const toml::value& node, float& value) -> void;
+        static auto GetValue(const toml::value& node, std::string& value) -> void;
+        static auto GetValue(const toml::value& node, std::unordered_map<std::string, bool>& value) -> void;
 
         static auto Get() -> Private::ConfigImpl&;
 
-        toml::parse_result _result;
-        toml::parse_result _resultCustom;
+        toml::value _result;
+        toml::value _resultCustom;
 
         Private::ConfigImpl _impl;
     };

@@ -11,13 +11,9 @@ namespace Core
         virtual ~IEventHandler() = default;
 
         // UI
-        virtual void Handle(const RE::MenuOpenCloseEvent*)
-        {
-        };
+        virtual auto Handle(const RE::MenuOpenCloseEvent*) -> void {};
 
         // Input
-        virtual void Handle(const RE::InputEvent*)
-        {
-        };
+        virtual auto Handle(const RE::InputEvent*) -> void {};
     };
-}
+} // namespace Core

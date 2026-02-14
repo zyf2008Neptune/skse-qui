@@ -6,7 +6,7 @@
 
 namespace Core::Locale
 {
-    inline std::optional<std::wstring> SanitizeKey(std::wstring a_key)
+    inline auto SanitizeKey(std::wstring a_key) -> std::optional<std::wstring>
     {
         using size_type = std::wstring::size_type;
         std::stack<size_type> stack;
@@ -15,14 +15,15 @@ namespace Core::Locale
             switch (a_key[pos])
             {
             case L'{':
+            {
                 stack.push(pos);
                 break;
+            }
             case L'}':
             {
                 switch (stack.size())
                 {
-                case 0:
-                    return std::nullopt;
+                case 0: { return std::nullopt; }
                 case 1:
                 {
                     size_type last = stack.top();
@@ -34,20 +35,24 @@ namespace Core::Locale
                         a_key.replace(off, count, L"");
                     }
                     pos = off;
+
+                    break;
                 }
-                break;
                 default:
+                {
                     stack.pop();
+                    break;
                 }
-                break;
+                }
             }
-            default: ;
+            default: {}
             }
         }
-
         if (!a_key.empty() && a_key.back() == L'\r')
+        {
             a_key.pop_back();
+        }
 
         return std::make_optional(a_key);
     }
-}
+} // namespace Core::Locale

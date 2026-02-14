@@ -8,42 +8,37 @@
 
 namespace Core
 {
-    class LocaleManager final :
-        public ISingleton<LocaleManager>
+    class LocaleManager final : public ISingleton<LocaleManager>
     {
         using size_type = std::wstring::size_type;
 
     public:
         LocaleManager();
 
-        void Load();
+        auto Load() -> void;
 
-        bool SetLocale(const std::string& a_locale = "");
+        auto SetLocale(const std::string& a_locale = "") -> bool;
 
-        std::string Translate(const std::string& a_key);
+        auto Translate(const std::string& a_key) -> std::string;
 
-        void Dump();
+        auto Dump() -> void;
 
     public:
-        std::wstring GetLocalization(const std::wstring& a_key);
-        std::string GetLocalization(const std::string& a_key);
+        auto GetLocalization(const std::wstring& a_key) -> std::wstring;
+        auto GetLocalization(const std::string& a_key) -> std::string;
 
-        LocalePackage& GetLocalePackage();
+        auto GetLocalePackage() -> LocalePackage&;
 
     private:
-        std::wstring GetLocalizationImpl(const std::wstring& a_key);
+        auto GetLocalizationImpl(const std::wstring& a_key) -> std::wstring;
 
-        std::optional<std::wstring> FindLocalization(const std::wstring& a_key);
+        auto FindLocalization(const std::wstring& a_key) -> std::optional<std::wstring>;
 
-        bool GetNestedLocalizations(
-            const std::wstring& a_key,
-            std::stack<size_type>& a_stack,
-            std::queue<std::wstring>& a_queue);
+        auto GetNestedLocalizations(const std::wstring& a_key, std::stack<size_type>& a_stack,
+                                    std::queue<std::wstring>& a_queue) -> bool;
 
-        bool InsertLocalizations(
-            std::wstring& a_localization,
-            std::stack<size_type>& a_stack,
-            std::queue<std::wstring>& a_queue);
+        auto InsertLocalizations(std::wstring& a_localization, std::stack<size_type>& a_stack,
+                                 std::queue<std::wstring>& a_queue) -> bool;
 
     private:
         std::wstring _locale{L"ENGLISH"};
@@ -52,4 +47,4 @@ namespace Core
         LocalePackage _packageENG;
         LocalePackage _packageLOC;
     };
-}
+} // namespace Core

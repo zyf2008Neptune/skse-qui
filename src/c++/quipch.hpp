@@ -1,7 +1,6 @@
 #pragma once
 
 #define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
-#define TOML_EXCEPTIONS 0
 
 #pragma warning(push)
 #pragma warning(disable : 4200)
@@ -13,7 +12,7 @@
 #include <frozen/map.h>
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/msvc_sink.h>
-#include <toml++/toml.h>
+#include <toml.hpp>
 
 #include <source_location>
 

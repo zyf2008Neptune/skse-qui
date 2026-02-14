@@ -56,6 +56,11 @@ namespace Core
         if (const auto config = Config::GetSingleton())
         {
             config->Load();
+        }
+
+        SKSE::log::info("Reading config..."sv);
+        if (const auto config = Config::GetSingleton())
+        {
             config->Read();
         }
 
@@ -89,8 +94,14 @@ namespace Core
                                             switch (a_msg->type)
                                             {
                                             case Interface::kDataLoaded:
+                                            {
                                                 OnDataLoaded();
                                                 break;
+                                            }
+                                            default:
+                                            {
+                                                break;
+                                            }
                                             }
                                         });
         }

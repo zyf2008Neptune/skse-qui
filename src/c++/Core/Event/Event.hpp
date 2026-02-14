@@ -16,24 +16,23 @@ namespace Core::Event
 {
     using EventResult = RE::BSEventNotifyControl;
 
-    class EventManager final :
-        public ISingleton<EventManager>,
-        public RE::BSTEventSink<RE::MenuOpenCloseEvent>,
-        public RE::BSTEventSink<RE::InputEvent*>
+    class EventManager final : public ISingleton<EventManager>,
+                               public RE::BSTEventSink<RE::MenuOpenCloseEvent>,
+                               public RE::BSTEventSink<RE::InputEvent*>
     {
         using HandlerVector = std::vector<IEventHandler*>;
 
     public:
-        void Register();
-        void Register(IEventHandler* a_handler);
+        auto Register() -> void;
+        auto Register(IEventHandler* a_handler) -> void;
 
     public: // BSTEventSink
-        EventResult ProcessEvent(const RE::MenuOpenCloseEvent* a_event,
-                                 RE::BSTEventSource<RE::MenuOpenCloseEvent>*) override;
+        auto ProcessEvent(const RE::MenuOpenCloseEvent* a_event, RE::BSTEventSource<RE::MenuOpenCloseEvent>*)
+            -> EventResult override;
 
-        EventResult ProcessEvent(RE::InputEvent* const* a_event, RE::BSTEventSource<RE::InputEvent*>*) override;
+        auto ProcessEvent(RE::InputEvent* const* a_event, RE::BSTEventSource<RE::InputEvent*>*) -> EventResult override;
 
     private:
         HandlerVector _handlers;
     };
-}
+} // namespace Core::Event
