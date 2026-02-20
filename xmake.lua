@@ -47,4 +47,3 @@ target("QUI")
     add_headerfiles("src/**.h" "src/**.hpp")
     add_includedirs("src")
     set_pcxxheader("src/quipch.hpp")
---
