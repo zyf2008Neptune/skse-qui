@@ -1,9 +1,11 @@
 #pragma once
 
-#include "src/c++/Core/Event/EventHandler.hpp"
+#include <RE/M/MenuOpenCloseEvent.h>
+#include <RE/I/InputEvent.h>
+#include <RE/B/ButtonEvent.h>
 
+#include "src/c++/Core/Event/EventHandler.hpp"
 #include "src/c++/General/Singleton.hpp"
-#include "src/c++/quipch.hpp"
 
 namespace Core::Menu
 {
@@ -16,13 +18,13 @@ namespace Core::Menu
 
     public: // IEventHandler
         // UI
-        void Handle(const RE::MenuOpenCloseEvent* a_event) override;
+        auto Handle(const RE::MenuOpenCloseEvent* a_event) -> void override;
 
         // Input
-        void Handle(const RE::InputEvent* a_event) override;
+        auto Handle(const RE::InputEvent* a_event) -> void override;
 
     private:
-        void ProcessKeyboard(const RE::ButtonEvent& a_event);
+        auto ProcessKeyboard(const RE::ButtonEvent& a_event) -> void;
         //void ProcessGamepad(const RE::ButtonEvent& a_event);
     };
 }

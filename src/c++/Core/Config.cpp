@@ -2,18 +2,20 @@
 
 #include <cstdint>
 #include <filesystem>
-#include <fmt/core.h>
-#include <SKSE/Impl/PCH.h>
-#include <SKSE/Interfaces.h>
-#include <SKSE/Logger.h>
 #include <sstream>
 #include <string_view>
 #include <string>
+#include <unordered_map>
+
+#include <fmt/core.h>
+
 #include <toml11/find.hpp>
 #include <toml11/get.hpp>
 #include <toml11/parser.hpp>
 #include <toml11/value.hpp>
-#include <unordered_map>
+
+#include <SKSE/Interfaces.h>
+#include <SKSE/Logger.h>
 
 namespace Core
 {

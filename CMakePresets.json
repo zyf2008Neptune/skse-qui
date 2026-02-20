@@ -43,7 +43,7 @@
       "cacheVariables": {
         "CMAKE_CXX_COMPILER": "cl"
       },
-      "generator": "Ninja",
+      "generator": "Visual Studio 17 2022",
       "inherits": [
         "cmake-dev",
         "vcpkg",

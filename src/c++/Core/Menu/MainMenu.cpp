@@ -1,14 +1,13 @@
 #include "MainMenu.hpp"
 
-#include "src/c++/Scaleform/System/Function.hpp"
-#include "src/c++/Scaleform/System/Logger.hpp"
+#include <RE/G/GFxMovieView.h>
+#include <RE/Offsets_VTABLE.h>
 
 #include "src/c++/Core/Config.hpp"
 
-
 namespace Core::Menu
 {
-    void MainMenuEx::ProcessEx(RE::GPtr<RE::GFxMovieView> a_movie)
+    auto MainMenuEx::ProcessEx(RE::GPtr<RE::GFxMovieView> a_movie) -> void
     {
         RE::GFxValue root;
         if (!a_movie->GetVariable(&root, "_root"))
@@ -78,15 +77,21 @@ namespace Core::Menu
                 {
                     RE::GFxValue entry;
                     if (!entryList.GetElement(i - 1, &entry))
+                    {
                         continue;
+                    }
 
                     RE::GFxValue entryText;
                     if (!entry.GetMember("text", &entryText))
+                    {
                         continue;
+                    }
 
                     const std::string text = entryText.GetString();
                     if (text.empty())
+                    {
                         continue;
+                    }
 
                     for (const auto& [enabled, name] : values)
                     {
@@ -129,7 +134,7 @@ namespace Core::Menu
 #endif
     }
 
-    RE::UI_MESSAGE_RESULTS MainMenuEx::ProcessMessageEx(RE::UIMessage& a_message)
+    auto MainMenuEx::ProcessMessageEx(RE::UIMessage& a_message) -> RE::UI_MESSAGE_RESULTS
     {
         using Message = RE::UI_MESSAGE_TYPE;
         switch (a_message.type.get())
@@ -153,7 +158,7 @@ namespace Core::Menu
         return _ProcessMessageFn(this, a_message);
     }
 
-    void MainMenuEx::Install()
+    auto MainMenuEx::Install() -> void
     {
         REL::Relocation<uintptr_t> vtbl(RE::VTABLE_MainMenu[0]);
         _ProcessMessageFn = vtbl.write_vfunc(0x4, &MainMenuEx::ProcessMessageEx);

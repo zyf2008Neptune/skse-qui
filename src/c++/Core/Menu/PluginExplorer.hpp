@@ -1,8 +1,16 @@
 #pragma once
+
+#include <cstdint>
 #include <map>
+#include <RE/B/BSCoreTypes.h>
+#include <RE/B/BSPointerHandle.h>
+#include <RE/F/FormTypes.h>
+#include <RE/T/TESForm.h>
+#include <RE/T/TESObjectCONT.h>
+#include <RE/T/TESObjectREFR.h>
 #include <string_view>
+#include <string>
 #include <unordered_map>
-#include "src/c++/quipch.hpp"
 
 namespace Core::Menu
 {
@@ -21,14 +29,14 @@ namespace Core::Menu
             {
             }
 
-            void AddForm(RE::TESForm* a_form, RE::FormType a_type);
+            auto AddForm(RE::TESForm* a_form, RE::FormType a_type) -> void;
 
-            std::string_view GetName() const noexcept { return _name; }
+            auto GetName() const noexcept -> std::string_view { return _name; }
 
-            TypeMap& GetForms() { return _forms; }
-            FormMap& GetForms(RE::FormType a_type) { return _forms[a_type]; }
+            auto GetForms() -> TypeMap& { return _forms; }
+            auto GetForms(RE::FormType a_type) -> FormMap& { return _forms[a_type]; }
 
-            size_t GetCount() { return _count; }
+            auto GetCount() -> size_t { return _count; }
 
         private:
             std::string_view _name{""};
@@ -40,22 +48,22 @@ namespace Core::Menu
         using PluginList = std::map<uint32_t, PluginInfo>;
         using PluginCache = std::unordered_map<std::string, uint32_t>;
 
-        static void Init();
-        static void Reset() { _plugins.clear(); }
+        static auto Init() -> void;
+        static auto Reset() -> void { _plugins.clear(); }
 
-        static PluginList& GetPlugins() { return _plugins; }
-        static PluginInfo* FindPlugin(uint32_t a_index);
+        static auto GetPlugins() -> PluginList& { return _plugins; }
+        static auto FindPlugin(uint32_t a_index) -> PluginInfo*;
 
-        static RE::TESObjectREFRPtr GetContainer();
-        static bool OpenContainer(uint32_t a_index, RE::FormType a_type);
+        static auto GetContainer() -> RE::TESObjectREFRPtr;
+        static auto OpenContainer(uint32_t a_index, RE::FormType a_type) -> bool;
 
     private:
-        static void InitContainer();
-        static void InitContainerRef();
+        static auto InitContainer() -> void;
+        static auto InitContainerRef() -> void;
 
-        static uint32_t GetTypeCount(RE::FormType a_type);
+        static auto GetTypeCount(RE::FormType a_type) -> uint32_t;
 
-        static void AddForms(RE::FormType a_type);
+        static auto AddForms(RE::FormType a_type) -> void;
 
     private:
         static inline PluginList _plugins;

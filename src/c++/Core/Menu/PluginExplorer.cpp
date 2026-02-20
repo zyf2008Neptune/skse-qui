@@ -1,16 +1,21 @@
 #include "PluginExplorer.hpp"
-#include "PluginExplorerMenu.hpp"
+
+#include <RE/I/IFormFactory.h>
+#include <RE/P/PlayerCharacter.h>
+#include <RE/T/TESObjectCONT.h>
+#include <SKSE/Logger.h>
 
 #include "src/c++/Core/Config.hpp"
 
-
 namespace Core::Menu
 {
-    void PluginExplorer::PluginInfo::AddForm(RE::TESForm* a_form, RE::FormType a_type)
+    auto PluginExplorer::PluginInfo::AddForm(RE::TESForm* a_form, RE::FormType a_type) -> void
     {
         auto formName = a_form->GetName();
         if (!formName || !a_form->GetPlayable())
+        {
             return;
+        }
 
         auto formID = a_form->GetFormID();
         switch (a_type)
@@ -52,12 +57,14 @@ namespace Core::Menu
             break;
         }
         default:
+        {
             SKSE::log::warn("Unhandled FormType: {}", static_cast<int32_t>(a_type));
             break;
         }
+        }
     }
 
-    void PluginExplorer::Init()
+    auto PluginExplorer::Init() -> void
     {
         auto handler = RE::TESDataHandler::GetSingleton();
         if (!handler)
@@ -74,7 +81,9 @@ namespace Core::Menu
             if (it != exclude.end())
             {
                 if (!it->second)
+                {
                     continue;
+                }
             }
 
             if (file->compileIndex != 0xFF)
@@ -103,7 +112,7 @@ namespace Core::Menu
         InitContainer();
     }
 
-    void PluginExplorer::InitContainer()
+    auto PluginExplorer::InitContainer() -> void
     {
         // TODO: Figure out how to access the container in an unloaded cell
         /*
@@ -144,7 +153,7 @@ namespace Core::Menu
         //_container->SetModel("furniture/noble/noblechest01.nif"); // FOR TESTING ONLY!
     }
 
-    void PluginExplorer::InitContainerRef()
+    auto PluginExplorer::InitContainerRef() -> void
     {
         auto factoryREFR = RE::IFormFactory::GetConcreteFormFactoryByType<RE::TESObjectREFR>();
         auto containerRef = factoryREFR ? factoryREFR->Create() : nullptr;
@@ -164,21 +173,25 @@ namespace Core::Menu
         _containerRef = containerRef->CreateRefHandle();
     }
 
-    RE::TESObjectREFRPtr PluginExplorer::GetContainer()
+    auto PluginExplorer::GetContainer() -> RE::TESObjectREFRPtr
     {
         auto ref = _containerRef.get();
         if (ref)
+        {
             return ref;
+        }
 
         InitContainerRef();
         return _containerRef.get();
     }
 
-    bool PluginExplorer::OpenContainer(uint32_t a_index, RE::FormType a_type)
+    auto PluginExplorer::OpenContainer(uint32_t a_index, RE::FormType a_type) -> bool
     {
         auto container = GetContainer();
         if (!container || container->IsActivationBlocked())
+        {
             return false;
+        }
 
         auto plugin = FindPlugin(a_index);
         if (!plugin)
@@ -221,7 +234,7 @@ namespace Core::Menu
         return true;
     }
 
-    PluginExplorer::PluginInfo* PluginExplorer::FindPlugin(uint32_t a_index)
+    auto PluginExplorer::FindPlugin(uint32_t a_index) -> PluginExplorer::PluginInfo*
     {
         auto it = _plugins.find(a_index);
         if (it != _plugins.end())
@@ -232,7 +245,7 @@ namespace Core::Menu
         return nullptr;
     }
 
-    uint32_t PluginExplorer::GetTypeCount(RE::FormType a_type)
+    auto PluginExplorer::GetTypeCount(RE::FormType a_type) -> uint32_t
     {
         auto& config = Config::Get();
         auto& count = config.PluginExplorer.Count;
@@ -240,43 +253,69 @@ namespace Core::Menu
         {
             using enum RE::FormType;
         case AlchemyItem:
+        {
             return count.Alchemy;
+        }
         case Ammo:
+        {
             return count.Ammo;
+        }
         case Armor:
+        {
             return count.Armor;
+        }
         case Book:
+        {
             return count.Book;
+        }
         case Ingredient:
+        {
             return count.Ingredient;
+        }
         case KeyMaster:
+        {
             return count.Key;
+        }
         case Misc:
+        {
             return count.Misc;
+        }
         case Note:
+        {
             return count.Note;
+        }
         case Scroll:
+        {
             return count.Scroll;
+        }
         case SoulGem:
+        {
             return count.Soul;
+        }
         case Spell:
+        {
             return count.Spell;
+        }
         case Weapon:
+        {
             return count.Weapon;
+        }
         }
 
         return 1;
     }
 
-    void PluginExplorer::AddForms(RE::FormType a_type)
+    auto PluginExplorer::AddForms(RE::FormType a_type) -> void
     {
         auto type = a_type;
         switch (a_type)
         {
             using T = RE::FormType;
         case T::Spell:
+        {
             type = T::Book;
             break;
+        }
         }
 
         auto handler = RE::TESDataHandler::GetSingleton();
@@ -285,11 +324,15 @@ namespace Core::Menu
         {
             auto file = form->GetFile(0);
             if (!file || !(file->compileIndex < 0xFF))
+            {
                 continue;
+            }
 
             auto it = _cache.find(file->fileName);
             if (it == _cache.end())
+            {
                 continue;
+            }
 
             auto index = file->GetCombinedIndex();
             auto info = _plugins.find(index);

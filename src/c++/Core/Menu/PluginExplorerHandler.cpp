@@ -1,52 +1,72 @@
 #include "PluginExplorerHandler.hpp"
+
+#include <RE/I/InputEvent.h>
+#include <RE/U/UI.h>
+#include <RE/C/ControlMap.h>
+#include <RE/I/InputDevices.h>
+#include <RE/M/MenuOpenCloseEvent.h>
+#include <RE/B/ButtonEvent.h>
+
 #include "PluginExplorerMenu.hpp"
 #include "PluginExplorer.hpp"
-
 #include "src/c++/Core/Config.hpp"
-
 
 namespace Core::Menu
 {
-    void PluginExplorerHandler::Handle(const RE::InputEvent* a_event)
+    auto PluginExplorerHandler::Handle(const RE::InputEvent* a_event) -> void
     {
         auto intfcStr = RE::InterfaceStrings::GetSingleton();
         auto ui = RE::UI::GetSingleton();
         if (ui->IsMenuOpen(intfcStr->console))
+        {
             return;
+        }
 
         auto controlMap = RE::ControlMap::GetSingleton();
         if (ui->GameIsPaused() || !controlMap->IsMovementControlsEnabled())
+        {
             return;
+        }
 
         using InputDevice = RE::INPUT_DEVICE;
         for (auto iter = a_event; iter; iter = iter->next)
         {
             auto event = iter->AsButtonEvent();
             if (!event)
+            {
                 continue;
+            }
 
             if (!event->IsDown())
+            {
                 continue;
+            }
 
             auto device = event->GetDevice();
             switch (device)
             {
             case InputDevice::kGamepad:
+            {
                 //ProcessGamepad(*event);
                 break;
+            }
             case InputDevice::kKeyboard:
+            {
                 ProcessKeyboard(*event);
                 break;
+            }
             }
         }
     }
 
-    void PluginExplorerHandler::Handle(const RE::MenuOpenCloseEvent* a_event)
+    auto PluginExplorerHandler::Handle(const RE::MenuOpenCloseEvent* a_event) -> void
     {
         using Menu = PluginExplorerMenu;
         auto uiStr = RE::InterfaceStrings::GetSingleton();
         if (!uiStr)
+        {
             return;
+        }
 
         auto& config = Config::Get();
         auto& name = a_event->menuName;
@@ -69,12 +89,16 @@ namespace Core::Menu
             {
                 auto focus = Menu::GetFocus();
                 if (focus != Menu::Focus::Container)
+                {
                     return;
+                }
 
                 auto pluginName = Menu::GetPluginName();
                 auto pluginIndex = Menu::GetPluginIndex();
                 if (pluginName.empty())
+                {
                     return;
+                }
 
                 auto formName = Menu::GetFormName();
                 auto formType = Menu::GetFormType();
@@ -91,7 +115,7 @@ namespace Core::Menu
         }
     }
 
-    void PluginExplorerHandler::ProcessKeyboard(const RE::ButtonEvent& a_event)
+    auto PluginExplorerHandler::ProcessKeyboard(const RE::ButtonEvent& a_event) -> void
     {
         using Menu = PluginExplorerMenu;
         auto& config = Config::Get();

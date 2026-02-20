@@ -23,7 +23,10 @@ namespace Core::Locale
             {
                 switch (stack.size())
                 {
-                case 0: { return std::nullopt; }
+                case 0:
+                {
+                    return std::nullopt;
+                }
                 case 1:
                 {
                     size_type last = stack.top();
@@ -45,7 +48,10 @@ namespace Core::Locale
                 }
                 }
             }
-            default: {}
+            default:
+            {
+                break;
+            }
             }
         }
         if (!a_key.empty() && a_key.back() == L'\r')

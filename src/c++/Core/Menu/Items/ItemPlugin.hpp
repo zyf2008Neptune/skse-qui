@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+#include <string_view>
+
 #include "src/c++/Scaleform/Common/Item.hpp"
 
 namespace Core::Menu::Item
@@ -14,7 +17,7 @@ namespace Core::Menu::Item
         {
         }
 
-        [[nodiscard]] RE::GFxValue GFxValue(RE::GFxMovieView& a_view) const override
+        [[nodiscard]] auto GFxValue(RE::GFxMovieView& a_view) const -> RE::GFxValue override
         {
             std::string index;
             if (_index >= 0xFE)

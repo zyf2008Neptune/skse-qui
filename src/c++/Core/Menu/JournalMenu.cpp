@@ -1,11 +1,16 @@
 #include "JournalMenu.hpp"
 
-#include "src/c++/Core/Config.hpp"
+#include <RE/F/FxDelegateArgs.h>
+#include <RE/I/IMenu.h>
+#include <RE/I/InterfaceStrings.h>
+#include <REL/ID.h>
+#include <REL/Relocation.h>
 
+#include "src/c++/Core/Config.hpp"
 
 namespace Core::Menu
 {
-    void JournalMenuEx::AcceptEx(RE::FxDelegateHandler::CallbackProcessor* a_cbReg)
+    auto JournalMenuEx::AcceptEx(RE::FxDelegateHandler::CallbackProcessor* a_cbReg) -> void
     {
         _AcceptFn(this, a_cbReg);
         fxDelegate->callbacks.Remove("RememberCurrentTabIndex");
@@ -15,7 +20,7 @@ namespace Core::Menu
         });
     }
 
-    RE::UI_MESSAGE_RESULTS JournalMenuEx::ProcessMessageEx(RE::UIMessage& a_message)
+    auto JournalMenuEx::ProcessMessageEx(RE::UIMessage& a_message) -> RE::UI_MESSAGE_RESULTS
     {
         using Message = RE::UI_MESSAGE_TYPE;
         if (a_message.type == Message::kShow)
@@ -36,11 +41,11 @@ namespace Core::Menu
         return _ProcessMessageFn(this, a_message);
     }
 
-    void JournalMenuEx::Install()
+    auto JournalMenuEx::Install() -> void
     {
         REL::Relocation<uintptr_t> vtbl(RE::VTABLE_JournalMenu[0]);
         _AcceptFn = vtbl.write_vfunc(0x1, &JournalMenuEx::AcceptEx);
         _ProcessMessageFn = vtbl.write_vfunc(0x4, &JournalMenuEx::ProcessMessageEx);
-        _TabIdx = {RELOCATION_ID(520167, 406697)};
+        _TabIdx = {REL::RelocationID(520167, 406697)};
     }
 }

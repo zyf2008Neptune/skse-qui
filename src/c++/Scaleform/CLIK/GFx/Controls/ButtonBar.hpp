@@ -1,6 +1,10 @@
 #pragma once
 
+#include <string>
+#include <string_view>
+
 #include "src/c++/Scaleform/CLIK/GFx/Core/UIComponent.hpp"
+#include "src/c++/Scaleform/Object.hpp"
 
 namespace SF::CLIK::GFx::Controls
 {
@@ -22,39 +26,39 @@ namespace SF::CLIK::GFx::Controls
 
         ~ButtonBar() = default;
 
-        ButtonBar& operator=(const ButtonBar&) = default;
-        ButtonBar& operator=(ButtonBar&&) = default;
-        ButtonBar& operator=(const super& a_rhs);
-        ButtonBar& operator=(super&& a_rhs);
+        auto operator=(const ButtonBar&) -> ButtonBar& = default;
+        auto operator=(ButtonBar&&) -> ButtonBar& = default;
+        auto operator=(const super& a_rhs) -> ButtonBar&;
+        auto operator=(super&& a_rhs) -> ButtonBar&;
 
     public:
         // Properties
-        std::string AutoSize() { return GetString("autoSize"); }
-        void AutoSize(std::string_view a_value) { return SetString("autoSize", a_value); }
-        double ButtonWidth() { return GetNumber("buttonWidth"); }
-        void ButtonWidth(double a_value) { return SetNumber("buttonWidth", a_value); }
-        Object Data() { return GetObject("data"); }
-        Object DataProvider() { return GetObject("dataProvider"); }
-        void DataProvider(const Object& a_value) { return SetObject("dataProvider", a_value); }
-        std::string Direction() { return GetString("direction"); }
-        void Direction(std::string_view a_value) { return SetString("direction", a_value); }
-        bool Disabled() { return GetBoolean("disabled"); }
-        void Disabled(bool a_value) { return SetBoolean("disabled", a_value); }
-        std::string ItemRenderer() { return GetString("itemRenderer"); }
-        void ItemRenderer(std::string_view a_value) { return SetString("itemRenderer", std::move(a_value)); }
-        std::string LabelField() { return GetString("labelField"); }
-        void LabelField(std::string_view a_value) { return SetString("labelField", a_value); }
-        double SelectedIndex() { return GetNumber("selectedIndex"); }
-        void SelectedIndex(double a_value) { return SetNumber("selectedIndex", a_value); }
-        Object SelectedItem() { return GetObject("selectedItem"); }
-        double Spacing() { return GetNumber("spacing"); }
-        void Spacing(double a_value) { return SetNumber("spacing", a_value); }
+        auto AutoSize() -> std::string { return GetString("autoSize"); }
+        auto AutoSize(std::string_view a_value) -> void { return SetString("autoSize", a_value); }
+        auto ButtonWidth() -> double { return GetNumber("buttonWidth"); }
+        auto ButtonWidth(double a_value) -> void { return SetNumber("buttonWidth", a_value); }
+        auto Data() -> Object { return GetObject("data"); }
+        auto DataProvider() -> Object { return GetObject("dataProvider"); }
+        auto DataProvider(const Object& a_value) -> void { return SetObject("dataProvider", a_value); }
+        auto Direction() -> std::string { return GetString("direction"); }
+        auto Direction(std::string_view a_value) -> void { return SetString("direction", a_value); }
+        auto Disabled() -> bool { return GetBoolean("disabled"); }
+        auto Disabled(bool a_value) -> void { return SetBoolean("disabled", a_value); }
+        auto ItemRenderer() -> std::string { return GetString("itemRenderer"); }
+        auto ItemRenderer(std::string_view a_value) -> void { return SetString("itemRenderer", std::move(a_value)); }
+        auto LabelField() -> std::string { return GetString("labelField"); }
+        auto LabelField(std::string_view a_value) -> void { return SetString("labelField", a_value); }
+        auto SelectedIndex() -> double { return GetNumber("selectedIndex"); }
+        auto SelectedIndex(double a_value) -> void { return SetNumber("selectedIndex", a_value); }
+        auto SelectedItem() -> Object { return GetObject("selectedItem"); }
+        auto Spacing() -> double { return GetNumber("spacing"); }
+        auto Spacing(double a_value) -> void { return SetNumber("spacing", a_value); }
 
     public:
         // Methods
-        void InvalidateData();
-        std::string ItemToLabel(Object a_item);
-        std::string ToString();
+        auto InvalidateData() -> void;
+        auto ItemToLabel(Object a_item) -> std::string;
+        auto ToString() -> std::string;
     };
 }
 

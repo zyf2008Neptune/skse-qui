@@ -19,6 +19,7 @@ include(Commonlib/cmake/CommonLibSSE.cmake)
 file(GLOB_RECURSE headers
     src/*.h
 	src/*.hpp
+	src/*.inl
 )
 
 file(GLOB_RECURSE sources

@@ -18,31 +18,57 @@ namespace Core
             switch (a_type)
             {
             case RE::FormType::AlchemyItem:
+            {
                 return formALCH;
+            }
             case RE::FormType::Ammo:
+            {
                 return formAMMO;
+            }
             case RE::FormType::Armor:
+            {
                 return formARMO;
+            }
             case RE::FormType::Book:
+            {
                 return formBOOK;
+            }
             case RE::FormType::Ingredient:
+            {
                 return formINGR;
+            }
             case RE::FormType::KeyMaster:
+            {
                 return formKEYM;
+            }
             case RE::FormType::Misc:
+            {
                 return formMISC;
+            }
             case RE::FormType::Note:
+            {
                 return formNOTE;
+            }
             case RE::FormType::Scroll:
+            {
                 return formSCRL;
+            }
             case RE::FormType::SoulGem:
+            {
                 return formSLGM;
+            }
             case RE::FormType::Spell:
+            {
                 return formSPEL;
+            }
             case RE::FormType::Weapon:
+            {
                 return formWEAP;
+            }
             default:
+            {
                 return unhandled;
+            }
             }
         }
 

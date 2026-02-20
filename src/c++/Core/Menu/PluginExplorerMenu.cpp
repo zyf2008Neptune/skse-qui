@@ -1,42 +1,58 @@
 #include "PluginExplorerMenu.hpp"
-#include "PluginExplorer.hpp"
-#include "SKSE/Logger.h"
-#include "src/c++/Core/Menu/Items/ItemForm.hpp"
-#include "src/c++/Core/Menu/Items/ItemPlugin.hpp"
 
+#include <array>
+#include <cstdint>
+#include <memory>
+#include <string>
+#include <string_view>
+#include <utility>
+
+#include <RE/B/BSScaleformManager.h>
+#include <RE/B/ButtonEvent.h>
+#include <RE/C/ControlMap.h>
+#include <RE/F/FormTypes.h>
+#include <RE/G/GameSettingCollection.h>
+#include <RE/G/GFxState.h>
+#include <RE/H/HUDMenu.h>
+#include <RE/I/IMenu.h>
+#include <RE/I/InputEvent.h>
+#include <RE/M/MenuEventHandler.h>
+#include <RE/P/PlayerCharacter.h>
+#include <RE/U/UI.h>
+#include <RE/U/UIMessage.h>
+#include <RE/U/UIMessageQueue.h>
+#include <RE/U/UserEvents.h>
+#include <SKSE/Logger.h>
+
+#include "PluginExplorer.hpp"
 #include "src/c++/Core/Config.hpp"
 #include "src/c++/Core/Locale/LocaleManager.hpp"
-
+#include "src/c++/Core/Locale/LocaleStrings.hpp"
+#include "src/c++/Core/Menu/Items/ItemForm.hpp"
+#include "src/c++/Core/Menu/Items/ItemPlugin.hpp"
 #include "src/c++/General/Input.hpp"
-
+#include "src/c++/Scaleform/System/Assert.hpp"
 #include "src/c++/Scaleform/System/Logger.hpp"
-#include <RE/M/MenuEventHandler.h>
-#include <RE/I/IMenu.h>
-
-#include "RE/G/GFxState.h"
-#include <RE/B/BSScaleformManager.h>
-
-#include "RE/U/UIMessage.h"
-
 
 namespace Core::Menu
 {
-    PluginExplorerMenu::PluginExplorerMenu() : Super(), RE::MenuEventHandler()
+    PluginExplorerMenu::PluginExplorerMenu() :
+        Super(), RE::MenuEventHandler()
     {
-        auto menu = static_cast<Super*>(this);
+        const auto menu = static_cast<Super*>(this);
         menu->inputContext = Context::kItemMenu;
         menu->depthPriority = SORT_PRIORITY;
         menu->menuFlags.set(Flag::kUsesMenuContext, Flag::kDisablePauseMenu, Flag::kAllowSaving, Flag::kHasButtonBar,
                             Flag::kUsesMovementToDirection);
 
-        auto& config = Config::Get();
-        if (config.PluginExplorer.Pause)
+        const auto& [General, PluginExplorer, MainMenu, JournalMenu] = Config::Get();
+        if (PluginExplorer.Pause)
         {
             menu->menuFlags.set(Flag::kPausesGame);
         }
 
-        auto scaleform = RE::BSScaleformManager::GetSingleton();
-        bool success = scaleform->LoadMovieEx(
+        const auto scaleform = RE::BSScaleformManager::GetSingleton();
+        const bool success = scaleform->LoadMovieEx(
             menu, FILE_NAME,
             [](RE::GFxMovieDef* a_def) -> void
             {
@@ -57,13 +73,13 @@ namespace Core::Menu
         Init();
         InitExtensions();
 
-        auto mc = RE::MenuControls::GetSingleton();
+        const auto mc = RE::MenuControls::GetSingleton();
         mc->RegisterHandler(this);
     }
 
     PluginExplorerMenu::~PluginExplorerMenu()
     {
-        auto mc = RE::MenuControls::GetSingleton();
+        const auto mc = RE::MenuControls::GetSingleton();
         mc->RemoveHandler(this);
     }
 
@@ -74,21 +90,29 @@ namespace Core::Menu
         switch (*a_message.type)
         {
         case Message::kShow:
+        {
             OnOpen();
             return Result::kHandled;
+        }
         case Message::kHide:
         case Message::kForceHide:
+        {
             OnClose();
             return Result::kHandled;
+        }
         case Message::kUpdateController:
+        {
             RefreshPlatform();
             return Result::kPassOn;
+        }
         default:
+        {
             return Super::ProcessMessage(a_message);
+        }
         }
     }
 
-    void PluginExplorerMenu::AdvanceMovie(float a_interval, uint32_t a_currentTime)
+    auto PluginExplorerMenu::AdvanceMovie(float a_interval, uint32_t a_currentTime) -> void
     {
         if ((_upHeld > 0) || (_downHeld > 0))
         {
@@ -99,9 +123,13 @@ namespace Core::Menu
                 if (_heldCount >= 5)
                 {
                     if (_upHeld)
+                    {
                         ModSelectedIndex(-1);
+                    }
                     else if (_downHeld)
+                    {
                         ModSelectedIndex(1);
+                    }
 
                     _heldCount = 0;
                 }
@@ -116,7 +144,7 @@ namespace Core::Menu
         Super::AdvanceMovie(a_interval, a_currentTime);
     }
 
-    bool PluginExplorerMenu::CanProcess(RE::InputEvent* a_event)
+    auto PluginExplorerMenu::CanProcess(RE::InputEvent* a_event) -> bool
     {
         using Type = RE::INPUT_EVENT_TYPE;
 
@@ -133,7 +161,7 @@ namespace Core::Menu
         return true;
     }
 
-    bool PluginExplorerMenu::ProcessButton(RE::ButtonEvent* a_event)
+    auto PluginExplorerMenu::ProcessButton(RE::ButtonEvent* a_event) -> bool
     {
         using Device = RE::INPUT_DEVICE;
         auto device = a_event->GetDevice();
@@ -166,8 +194,8 @@ namespace Core::Menu
                     break;
                 }
                 }
+                break;
             }
-            break;
             case Device::kGamepad:
             {
                 using Key = RE::BSWin32GamepadDevice::Key;
@@ -190,6 +218,7 @@ namespace Core::Menu
                     break;
                 }
                 }
+                break;
             }
             }
         }
@@ -206,14 +235,18 @@ namespace Core::Menu
                 case Key::kD:
                 case Key::kRight:
                 case Key::kEnter:
+                {
                     Select();
                     break;
+                }
                 case Key::kA:
                 case Key::kLeft:
                 case Key::kEscape:
                 case Key::kTab:
+                {
                     Back();
                     break;
+                }
                 case Key::kW:
                 case Key::kUp:
                 {
@@ -229,85 +262,105 @@ namespace Core::Menu
                     break;
                 }
                 case Key::kPageUp:
+                {
                     ModSelectedIndex(-16);
                     break;
+                }
                 case Key::kPageDown:
+                {
                     ModSelectedIndex(16);
                     break;
                 }
+                }
+                break;
             }
-            break;
             case Device::kMouse:
             {
                 using Key = RE::BSWin32MouseDevice::Key;
                 switch (a_event->GetIDCode())
                 {
                 case Key::kLeftButton:
+                {
                     Select();
                     break;
+                }
                 case Key::kRightButton:
+                {
                     Back();
                     break;
+                }
                 case Key::kWheelUp:
+                {
                     ModSelectedIndex(-1);
                     break;
+                }
                 case Key::kWheelDown:
+                {
                     ModSelectedIndex(1);
                     break;
                 }
+                }
+                break;
             }
-            break;
             case Device::kGamepad:
             {
                 using Key = RE::BSWin32GamepadDevice::Key;
                 switch (a_event->GetIDCode())
                 {
                 case Key::kA:
+                {
                     Select();
                     break;
+                }
                 case Key::kB:
+                {
                     Back();
                     break;
+                }
                 case Key::kUp:
                 {
-                    _upHeld += 1;
-                    ModSelectedIndex(-1);
-                    break;
+                    {
+                        _upHeld += 1;
+                        ModSelectedIndex(-1);
+                        break;
+                    }
                 }
                 case Key::kDown:
                 {
-                    _downHeld += 1;
-                    ModSelectedIndex(1);
-                    break;
+                    {
+                        _downHeld += 1;
+                        ModSelectedIndex(1);
+                        break;
+                    }
                 }
                 }
+                break;
             }
-            break;
             }
         }
 
         return true;
     }
 
-    bool PluginExplorerMenu::IsOpen()
+    auto PluginExplorerMenu::IsOpen() -> bool
     {
         const auto ui = RE::UI::GetSingleton();
         return ui->IsMenuOpen(MENU_NAME);
     }
 
-    void PluginExplorerMenu::Open()
+    auto PluginExplorerMenu::Open() -> void
     {
         const auto queue = RE::UIMessageQueue::GetSingleton();
         queue->AddMessage(MENU_NAME, RE::UI_MESSAGE_TYPE::kShow, nullptr);
     }
 
-    void PluginExplorerMenu::Close()
+    auto PluginExplorerMenu::Close() -> void
     {
         auto queue = RE::UIMessageQueue::GetSingleton();
         queue->AddMessage(MENU_NAME, RE::UI_MESSAGE_TYPE::kHide, nullptr);
     }
 
-    void PluginExplorerMenu::Toggle()
+    auto PluginExplorerMenu::Toggle() -> void
     {
         if (IsOpen())
         {
@@ -319,7 +372,7 @@ namespace Core::Menu
         }
     }
 
-    void PluginExplorerMenu::Init()
+    auto PluginExplorerMenu::Init() -> void
     {
         using element_t = std::pair<std::reference_wrapper<SF::Object>, std::string_view>;
         std::array objects{element_t{std::ref(_rootObj), "_root.rootObj"sv},
@@ -351,7 +404,7 @@ namespace Core::Menu
         auto container = PluginExplorer::GetContainer();
         if (container)
         {
-            auto player = RE::PlayerCharacter::GetSingleton();
+            const auto player = RE::PlayerCharacter::GetSingleton();
             container->SetParentCell(player->GetParentCell());
             container->SetPosition({player->GetPositionX(), player->GetPositionY(), -2000});
             container->SetCollision(false);
@@ -362,14 +415,14 @@ namespace Core::Menu
         }
     }
 
-    void PluginExplorerMenu::InitExtensions()
+    auto PluginExplorerMenu::InitExtensions() -> void
     {
         const RE::GFxValue boolean{true};
         SF::Assert(_view->SetVariable("_global.gfxExtensions", boolean));
         SF::Assert(_view->SetVariable("_global.noInvisibleAdvance", boolean));
     }
 
-    void PluginExplorerMenu::OnOpen()
+    auto PluginExplorerMenu::OnOpen() -> void
     {
         using UEFlag = RE::ControlMap::UEFlag;
         if (const auto control = RE::ControlMap::GetSingleton())
@@ -383,7 +436,7 @@ namespace Core::Menu
         }
     }
 
-    void PluginExplorerMenu::OnClose()
+    auto PluginExplorerMenu::OnClose() -> void
     {
         using UEFlag = RE::ControlMap::UEFlag;
         if (const auto control = RE::ControlMap::GetSingleton())
@@ -397,7 +450,7 @@ namespace Core::Menu
         }
     }
 
-    void PluginExplorerMenu::Refresh()
+    auto PluginExplorerMenu::Refresh() -> void
     {
         UpdatePosition();
         RefreshPlugins();
@@ -424,7 +477,7 @@ namespace Core::Menu
         RefreshUI();
     }
 
-    void PluginExplorerMenu::RefreshPlugins()
+    auto PluginExplorerMenu::RefreshPlugins() -> void
     {
         const auto idx = _pluginList.SelectedIndex();
         _pluginList.clear();
@@ -432,7 +485,10 @@ namespace Core::Menu
         auto& plugins = PluginExplorer::GetPlugins();
         for (auto& [index, plugin] : plugins)
         {
-            if (plugin.GetCount() == 0) continue;
+            if (plugin.GetCount() == 0)
+            {
+                continue;
+            }
 
             auto itemPlugin = std::make_shared<Item::ItemPlugin>(index, plugin.GetName(), plugin.GetCount());
             _pluginList.push_back(itemPlugin);
@@ -442,9 +498,12 @@ namespace Core::Menu
         _pluginList.RestoreIndex(idx);
     }
 
-    void PluginExplorerMenu::RefreshForms()
+    auto PluginExplorerMenu::RefreshForms() -> void
     {
-        if (_pluginName.empty()) return;
+        if (_pluginName.empty())
+        {
+            return;
+        }
 
         const auto idx = _formList.SelectedIndex();
         _formList.clear();
@@ -482,13 +541,13 @@ namespace Core::Menu
         _formList.Visible(true);
     }
 
-    void PluginExplorerMenu::RefreshUI()
+    auto PluginExplorerMenu::RefreshUI() -> void
     {
         UpdateTitle();
         UpdateButtonBar();
     }
 
-    void PluginExplorerMenu::ModSelectedIndex(double a_mod)
+    auto PluginExplorerMenu::ModSelectedIndex(double a_mod) -> void
     {
         if (_focus == Focus::Plugin)
         {
@@ -502,15 +561,19 @@ namespace Core::Menu
         }
     }
 
-    void PluginExplorerMenu::ModSelectedPage(double a_mod)
+    auto PluginExplorerMenu::ModSelectedPage(double a_mod) -> void
     {
         if (_focus == Focus::Plugin)
+        {
             _pluginList.InvokeA("modSelectedPage", nullptr, a_mod);
+        }
         else if (_focus == Focus::Form)
+        {
             _formList.InvokeA("modSelectedPage", nullptr, a_mod);
+        }
     }
 
-    void PluginExplorerMenu::Select()
+    auto PluginExplorerMenu::Select() -> void
     {
         if (_focus == Focus::Plugin)
         {
@@ -539,7 +602,7 @@ namespace Core::Menu
         RefreshUI();
     }
 
-    void PluginExplorerMenu::Back()
+    auto PluginExplorerMenu::Back() -> void
     {
         if (_focus == Focus::Plugin)
         {
@@ -559,7 +622,7 @@ namespace Core::Menu
         RefreshUI();
     }
 
-    void PluginExplorerMenu::UpdatePosition()
+    auto PluginExplorerMenu::UpdatePosition() -> void
     {
         auto def = _view->GetMovieDef();
         if (def)
@@ -569,9 +632,9 @@ namespace Core::Menu
         }
     }
 
-    void PluginExplorerMenu::UpdateTitle()
+    auto PluginExplorerMenu::UpdateTitle() -> void
     {
-        std::string str = "";
+        std::string str{};
         if (_focus == Focus::Form)
         {
             str = _pluginName;
@@ -587,7 +650,7 @@ namespace Core::Menu
         _title.Visible(true);
     }
 
-    void PluginExplorerMenu::UpdateButtonBar()
+    auto PluginExplorerMenu::UpdateButtonBar() -> void
     {
         if (!_view) { return; }
 
@@ -614,7 +677,7 @@ namespace Core::Menu
         {
             RE::GFxValue obj;
             _view->CreateObject(std::addressof(obj));
-            auto setting = gmst->GetSetting(a_label);
+            const auto setting = gmst->GetSetting(a_label);
             obj.SetMember("label", {static_cast<std::string_view>(setting->GetString())});
             obj.SetMember("index", {a_index});
             _buttonBarProvider.PushBack(obj);

@@ -1,12 +1,10 @@
 #pragma once
 
-#define TOML_EXCEPTIONS 0
-
 #include <cstdint>
 #include <string>
-#include <toml11/value.hpp>
-
 #include <unordered_map>
+
+#include <toml11/value.hpp>
 
 #include "src/c++/General/Singleton.hpp"
 

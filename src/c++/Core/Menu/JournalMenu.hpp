@@ -1,4 +1,7 @@
 #pragma once
+#include <cstdint>
+#include <RE/J/JournalMenu.h>
+#include <RE/I/IMenu.h>
 
 namespace Core::Menu
 {
@@ -12,12 +15,12 @@ namespace Core::Menu
             kSystem
         };
 
-        static void Install();
+        static auto Install() -> void;
 
     public:
-        void AcceptEx(RE::FxDelegateHandler::CallbackProcessor* a_cbReg); // 01
-        RE::UI_MESSAGE_RESULTS ProcessMessageEx(RE::UIMessage& a_message); // 04
-        ~JournalMenuEx() override;
+        auto AcceptEx(RE::FxDelegateHandler::CallbackProcessor* a_cbReg) -> void; // 01
+        auto ProcessMessageEx(RE::UIMessage& a_message) -> RE::UI_MESSAGE_RESULTS; // 04
+        ~JournalMenuEx() override = default;
 
     private:
         using AcceptFn = decltype(&RE::JournalMenu::Accept);

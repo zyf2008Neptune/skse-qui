@@ -2,6 +2,11 @@
 
 #include <string_view>
 
+#include <RE/U/UI.h>
+#include <SKSE/API.h>
+#include <SKSE/Interfaces.h>
+#include <SKSE/Logger.h>
+
 #include "Config.hpp"
 #include "Console/ConsoleCommands.hpp"
 #include "Event/Event.hpp"
@@ -11,11 +16,6 @@
 #include "Menu/PluginExplorer.hpp"
 #include "Menu/PluginExplorerHandler.hpp"
 #include "Menu/PluginExplorerMenu.hpp"
-#include "RE/U/UI.h"
-#include "SKSE/API.h"
-#include "SKSE/Interfaces.h"
-#include "SKSE/Logger.h"
-
 
 namespace Core
 {

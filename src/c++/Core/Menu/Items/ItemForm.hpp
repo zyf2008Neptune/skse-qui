@@ -1,12 +1,13 @@
 #pragma once
 
-#include "src/c++/Scaleform/Common/Item.hpp"
+#include <RE/F/FormTypes.h>
+#include <string>
+#include <string_view>
 
+#include "src/c++/Scaleform/Common/Item.hpp"
 #include "src/c++/Core/locale/LocaleManager.hpp"
 #include "src/c++/Core/Locale/LocaleStrings.hpp"
-
-#include <RE/F/FormTypes.h>
-
+#include <RE/G/GFxMovieView.h>
 
 namespace Core::Menu::Item
 {
@@ -23,7 +24,7 @@ namespace Core::Menu::Item
             _name = locale->Translate(type);
         }
 
-        [[nodiscard]] RE::GFxValue GFxValue(RE::GFxMovieView& a_view) const override
+        [[nodiscard]] auto GFxValue(RE::GFxMovieView& a_view) const -> RE::GFxValue override
         {
             RE::GFxValue value;
             a_view.CreateObject(std::addressof(value));

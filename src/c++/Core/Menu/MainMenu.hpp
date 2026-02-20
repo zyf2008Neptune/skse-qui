@@ -11,17 +11,17 @@ namespace Core::Menu
     class MainMenuEx : public RE::MainMenu
     {
     public:
-        static void Install();
-        static void ProcessEx(RE::GPtr<RE::GFxMovieView> a_movie);
+        static auto Install() -> void;
+        static auto ProcessEx(RE::GPtr<RE::GFxMovieView> a_movie) -> void;
 
     public:
-        RE::UI_MESSAGE_RESULTS ProcessMessageEx(RE::UIMessage& a_message); // 04
+        auto ProcessMessageEx(RE::UIMessage& a_message) -> RE::UI_MESSAGE_RESULTS; // 04
 
     private:
         using ProcessMessageFn = decltype(&RE::MainMenu::ProcessMessage);
 
         inline static REL::Relocation<ProcessMessageFn> _ProcessMessageFn;
 
-        inline static bool _show{false};
+        inline static auto _show{false};
     };
 }

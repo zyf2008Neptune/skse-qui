@@ -1,19 +1,17 @@
 #pragma once
-#include <type_traits>
+#include <memory>
 
-template <class T>
-class ISingleton
+template <typename T>
+struct ISingleton
 {
-public:
     ISingleton() = default;
     ISingleton(const ISingleton&) = delete;
     ISingleton(ISingleton&&) = delete;
-    ISingleton& operator=(const ISingleton&) = delete;
-    ISingleton& operator=(ISingleton&&) = delete;
+    auto operator=(const ISingleton&) -> ISingleton& = delete;
+    auto operator=(ISingleton&&) -> ISingleton& = delete;
     ~ISingleton() = default;
 
-public:
-    static T* GetSingleton()
+    static auto GetSingleton() -> T*
     {
         static T singleton;
         return std::addressof(singleton);
