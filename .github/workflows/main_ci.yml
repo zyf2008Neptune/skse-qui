@@ -58,4 +58,5 @@ jobs:
         uses: lukka/run-cmake@v10
         with:
           cmakeListsTxtPath: ${{ github.workspace }}/main/CMakeLists.txt
+          buildPreset: 'x64-windows'
           
