@@ -9,3 +9,4 @@ build/
 # files
 *.zip
 /out
+/Folder.DotSettings.user

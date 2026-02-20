@@ -22,6 +22,6 @@ nagging you? Want to remove items from the list? Well, you're in luck!
 # Build Dependencies
 - [fmt](https://github.com/fmtlib/fmt)
 - [frozen](https://github.com/serge-sans-paille/frozen)
-- [toml++](https://github.com/marzer/tomlplusplus)
+- [toml11](https://github.com/ToruNiina/toml11)
 - [spdlog](https://github.com/gabime/spdlog)
-- [CommonLibSSE NG](https://github.com/CharmedBaryon/CommonLibSSE-NG)
+- [CommonLibVR](https://github.com/alandtse/CommonLibVR)
