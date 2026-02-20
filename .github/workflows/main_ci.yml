@@ -33,10 +33,7 @@ jobs:
         with:
           path: main
           submodules: recursive
-
-      - name: GetCMake  
-        uses: lukka/get-cmake@latest 
-
+      
       - name: Extract vcpkg baseline from vcpkg.json
         id: get_vcpkg_baseline
         shell: pwsh
