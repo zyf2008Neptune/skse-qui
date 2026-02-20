@@ -33,16 +33,26 @@ jobs:
         with:
           path: main
           submodules: recursive
-     
+
+      - name: GetCMake  
+        uses: lukka/get-cmake@latest 
+
+      - name: Extract vcpkg baseline from vcpkg.json
+        id: get_vcpkg_baseline
+        shell: pwsh
+        run: |
+          $vcpkgJson = Get-Content main/vcpkg.json | ConvertFrom-Json
+          $baseline = $vcpkgJson.'builtin-baseline'
+          echo "baseline=$baseline" >> $env:GITHUB_OUTPUT
+          echo "✓ Using vcpkg baseline from vcpkg.json: $baseline"
+
       - name: Setup MSVC Environment
         uses: ilammy/msvc-dev-cmd@v1
 
       - name: Setup vcpkg
-        uses: johnwason/vcpkg-action@v7
+        uses: lukka/run-vcpkg@v11
         with:
-          manifest-dir: ${{ github.workspace }} # Set to directory containing vcpkg.json
-          triplet: x64-windows-release
-          token: ${{ github.token }}
+          vcpkgGitCommitId: ${{ steps.get_vcpkg_baseline.outputs.baseline }}
 
       - name: Build
         uses: lukka/run-cmake@v10
