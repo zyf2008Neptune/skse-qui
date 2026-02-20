@@ -1,4 +1,4 @@
-name: Xmake CI
+﻿name: Xmake CI
 
 on:
   push:
@@ -26,29 +26,25 @@ jobs:
         uses: xmake-io/github-action-setup-xmake@v1.0.13
         with:
           xmake-version: latest
-
-      - name: Setup XMake (Global)
+          actions-cache-folder: '.xmake-cache'
+          actions-cache-key: ${{ runner.os }}
+ 
+      - name: Build
         run: |
-          xmake repo --update
-          echo "GLOBAL_XMAKE=$env:LOCALAPPDATA/.xmake/" >> $env:GITHUB_ENV
+          xmake f -v -y -m release
+          xmake -vD -y -g default
+          xmake f -v -y -m releasedbg
+          xmake -vD -y
 
-      - name: Setup Packages (Hash)
-        id: packages_key
+      - name: Pack
         run: |
-          echo "hash=$(xmake l utils.ci.packageskey)" >> $env:GITHUB_OUTPUT
-
-      - name: Setup Packages (Cache)
-        uses: actions/cache@v3
-        with:
-          path: ${{ env.GLOBAL_XMAKE }}/packages
-          key: ${{ steps.packages_key.outputs.hash }}
-
-      - name: Build and Package
-        run: |
-          xmake package -y
+          xmake pack
+          echo "🗃️ Packed artifacts"
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build
           path: ${{ github.workspace }}/build/packages/**/*.zip
+
+
