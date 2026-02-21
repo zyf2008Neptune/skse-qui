@@ -26,12 +26,10 @@ jobs:
         uses: xmake-io/github-action-setup-xmake@v1.0.13
         with:
           xmake-version: latest
-          actions-cache-folder: '.xmake-cache'
-          actions-cache-key: ${{ runner.os }}
- 
+           
       - name: Build
         run: 
-          xmake f -m release
+          xmake f -m -y release
         
       - name: Pack
         run: |
