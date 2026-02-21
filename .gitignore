@@ -10,3 +10,5 @@ build/
 *.zip
 /out
 /Folder.DotSettings.user
+/cmakebuild
+/vsxmake2022
