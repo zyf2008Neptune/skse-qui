@@ -43,7 +43,7 @@ jobs:
            
       - name: Build
         run: 
-          xmake f -m -y release
+          xmake f -y -m release
         
       - name: Pack
         run: |
