@@ -3,7 +3,7 @@
 #include <RE/G/GFxMovieView.h>
 #include <RE/Offsets_VTABLE.h>
 
-#include "src/c++/Core/Config.hpp"
+#include "Core/Config.hpp"
 
 namespace Core::Menu
 {

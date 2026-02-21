@@ -1,13 +1,15 @@
 #pragma once
 
-#include <RE/F/FormTypes.h>
+#include <memory>
 #include <string>
 #include <string_view>
 
-#include "src/c++/Scaleform/Common/Item.hpp"
-#include "src/c++/Core/locale/LocaleManager.hpp"
-#include "src/c++/Core/Locale/LocaleStrings.hpp"
+#include <RE/F/FormTypes.h>
 #include <RE/G/GFxMovieView.h>
+
+#include "Scaleform/Common/Item.hpp"
+#include "Core/locale/LocaleManager.hpp"
+#include "Core/Locale/LocaleStrings.hpp"
 
 namespace Core::Menu::Item
 {
@@ -35,9 +37,9 @@ namespace Core::Menu::Item
             return value;
         }
 
-        [[nodiscard]] const RE::FormType GetType() const noexcept { return _type; }
-        [[nodiscard]] std::string_view GetName() const noexcept { return _name; }
-        [[nodiscard]] const size_t GetCount() const noexcept { return _count; }
+        [[nodiscard]] auto GetType() const noexcept -> const RE::FormType { return _type; }
+        [[nodiscard]] auto GetName() const noexcept -> std::string_view { return _name; }
+        [[nodiscard]] auto GetCount() const noexcept -> const size_t { return _count; }
 
     private:
         RE::FormType _type;

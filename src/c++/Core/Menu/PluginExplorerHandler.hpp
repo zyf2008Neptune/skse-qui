@@ -4,8 +4,8 @@
 #include <RE/I/InputEvent.h>
 #include <RE/B/ButtonEvent.h>
 
-#include "src/c++/Core/Event/EventHandler.hpp"
-#include "src/c++/General/Singleton.hpp"
+#include "Core/Event/EventHandler.hpp"
+#include "General/Singleton.hpp"
 
 namespace Core::Menu
 {

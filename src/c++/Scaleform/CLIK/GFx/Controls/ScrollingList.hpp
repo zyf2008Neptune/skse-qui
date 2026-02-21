@@ -22,32 +22,32 @@ namespace SF::CLIK::GFx::Controls
 
         ~ScrollingList() = default;
 
-        ScrollingList& operator=(const ScrollingList&) = default;
-        ScrollingList& operator=(ScrollingList&&) = default;
-        ScrollingList& operator=(const super& a_rhs);
-        ScrollingList& operator=(super&& a_rhs);
+        auto operator=(const ScrollingList&) -> ScrollingList& = default;
+        auto operator=(ScrollingList&&) -> ScrollingList& = default;
+        auto operator=(const super& a_rhs) -> ScrollingList&;
+        auto operator=(super&& a_rhs) -> ScrollingList&;
 
     public:
         // Properties
-        double AvailableWidth() const { return GetNumber("availableWidth"); }
-        bool Disabled() const { return GetBoolean("disabled"); }
-        void Disabled(bool a_value) { SetBoolean("disabled", a_value); }
-        double RowCount() const { return GetNumber("rowCount"); }
-        void RowCount(double a_value) { SetNumber("rowCount", a_value); }
-        double RowHeight() const { return GetNumber("rowHeight"); }
-        void RowHeight(double a_value) { SetNumber("rowHeight", a_value); }
-        Object ScrollBar() const { return GetObject("scrollBar"); }
-        void ScrollBar(const Object& a_value) { SetObject("scrollBar", a_value); }
-        double ScrollPosition() const { return GetNumber("scrollPosition"); }
-        void ScrollPosition(double a_value) { SetNumber("scrollPosition", a_value); }
-        double SelectedIndex() const { return GetNumber("selectedIndex"); }
-        void SelectedIndex(double a_value) { SetNumber("selectedIndex", a_value); }
+        auto AvailableWidth() const -> double { return GetNumber("availableWidth"); }
+        auto Disabled() const -> bool { return GetBoolean("disabled"); }
+        auto Disabled(bool a_value) -> void { SetBoolean("disabled", a_value); }
+        auto RowCount() const -> double { return GetNumber("rowCount"); }
+        auto RowCount(double a_value) -> void { SetNumber("rowCount", a_value); }
+        auto RowHeight() const -> double { return GetNumber("rowHeight"); }
+        auto RowHeight(double a_value) -> void { SetNumber("rowHeight", a_value); }
+        auto ScrollBar() const -> Object { return GetObject("scrollBar"); }
+        auto ScrollBar(const Object& a_value) -> void { SetObject("scrollBar", a_value); }
+        auto ScrollPosition() const -> double { return GetNumber("scrollPosition"); }
+        auto ScrollPosition(double a_value) -> void { SetNumber("scrollPosition", a_value); }
+        auto SelectedIndex() const -> double { return GetNumber("selectedIndex"); }
+        auto SelectedIndex(double a_value) -> void { SetNumber("selectedIndex", a_value); }
 
     public:
         // Methods
-        void InvalidateData();
-        void ScrollToIndex(double a_index);
-        std::string ToString();
+        auto InvalidateData() -> void;
+        auto ScrollToIndex(double a_index) -> void;
+        auto ToString() -> std::string;
     };
 }
 

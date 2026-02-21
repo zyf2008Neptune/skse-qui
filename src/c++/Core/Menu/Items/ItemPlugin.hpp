@@ -3,7 +3,7 @@
 #include <string>
 #include <string_view>
 
-#include "src/c++/Scaleform/Common/Item.hpp"
+#include "Scaleform/Common/Item.hpp"
 
 namespace Core::Menu::Item
 {
@@ -39,9 +39,9 @@ namespace Core::Menu::Item
             return value;
         }
 
-        [[nodiscard]] const uint32_t GetIndex() const noexcept { return _index; }
-        [[nodiscard]] std::string_view GetName() const noexcept { return _name; }
-        [[nodiscard]] const size_t GetCount() const noexcept { return _count; }
+        [[nodiscard]] auto GetIndex() const noexcept -> const uint32_t { return _index; }
+        [[nodiscard]] auto GetName() const noexcept -> std::string_view { return _name; }
+        [[nodiscard]] auto GetCount() const noexcept -> const size_t { return _count; }
 
     private:
         uint32_t _index;

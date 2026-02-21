@@ -43,14 +43,14 @@
       "cacheVariables": {
         "CMAKE_CXX_COMPILER": "cl"
       },
-      "generator": "Visual Studio 17 2022",
+      "generator": "Ninja",
       "inherits": [
         "cmake-dev",
         "vcpkg",
         "windows"
       ],
       "name": "x64-windows",
-      "binaryDir": "${sourceDir}/out/"
+      "binaryDir": "${sourceDir}/cmakebuild/"
     }    
   ],
   "version": 2

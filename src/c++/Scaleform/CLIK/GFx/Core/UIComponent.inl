@@ -5,7 +5,7 @@
 
 #include <RE/G/GFxValue.h>
 
-#include "src/c++/Scaleform/Object.hpp"
+#include "Scaleform/Object.hpp"
 
 namespace SF::CLIK::GFx::Core
 {

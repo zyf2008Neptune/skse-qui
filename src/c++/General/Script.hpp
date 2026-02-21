@@ -10,8 +10,6 @@
 #include <RE/T/TESForm.h>
 #include <RE/V/VirtualMachine.h>
 
-#include "src/c++/quipch.hpp"
-
 namespace General::Script
 {
     using InternalVM = RE::BSScript::Internal::VirtualMachine;

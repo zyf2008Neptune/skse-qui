@@ -6,7 +6,7 @@
 #include <REL/ID.h>
 #include <REL/Relocation.h>
 
-#include "src/c++/Core/Config.hpp"
+#include "Core/Config.hpp"
 
 namespace Core::Menu
 {

@@ -5,7 +5,7 @@
 #include <RE/T/TESObjectCONT.h>
 #include <SKSE/Logger.h>
 
-#include "src/c++/Core/Config.hpp"
+#include "Core/Config.hpp"
 
 namespace Core::Menu
 {

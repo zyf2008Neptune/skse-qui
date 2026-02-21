@@ -5,7 +5,7 @@
 #include <RE/M/MenuOpenCloseEvent.h>
 #include <vector>
 
-#include "src/c++/General/Singleton.hpp"
+#include "General/Singleton.hpp"
 
 namespace Core
 {

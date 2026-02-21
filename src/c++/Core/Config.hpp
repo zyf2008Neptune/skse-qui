@@ -6,7 +6,7 @@
 
 #include <toml11/value.hpp>
 
-#include "src/c++/General/Singleton.hpp"
+#include "General/Singleton.hpp"
 
 namespace Core::Private
 {

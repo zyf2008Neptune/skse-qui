@@ -25,14 +25,14 @@
 #include <SKSE/Logger.h>
 
 #include "PluginExplorer.hpp"
-#include "src/c++/Core/Config.hpp"
-#include "src/c++/Core/Locale/LocaleManager.hpp"
-#include "src/c++/Core/Locale/LocaleStrings.hpp"
-#include "src/c++/Core/Menu/Items/ItemForm.hpp"
-#include "src/c++/Core/Menu/Items/ItemPlugin.hpp"
-#include "src/c++/General/Input.hpp"
-#include "src/c++/Scaleform/System/Assert.hpp"
-#include "src/c++/Scaleform/System/Logger.hpp"
+#include "Core/Config.hpp"
+#include "Core/Locale/LocaleManager.hpp"
+#include "Core/Locale/LocaleStrings.hpp"
+#include "Core/Menu/Items/ItemForm.hpp"
+#include "Core/Menu/Items/ItemPlugin.hpp"
+#include "General/Input.hpp"
+#include "Scaleform/System/Assert.hpp"
+#include "Scaleform/System/Logger.hpp"
 
 namespace Core::Menu
 {

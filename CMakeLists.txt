@@ -74,6 +74,7 @@ list(APPEND DEP toml11::toml11)
 find_package(spdlog CONFIG REQUIRED)
 list(APPEND DEP spdlog::spdlog)
 
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/c++)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${DEP})
 
 if(MSVC)

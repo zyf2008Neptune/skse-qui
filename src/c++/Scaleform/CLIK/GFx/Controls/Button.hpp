@@ -3,8 +3,8 @@
 #include <string>
 #include <string_view>
 
-#include "src/c++/Scaleform/CLIK/GFx/Core/UIComponent.hpp"
-#include "src/c++/Scaleform/Object.hpp"
+#include "Scaleform/CLIK/GFx/Core/UIComponent.hpp"
+#include "Scaleform/Object.hpp"
 
 namespace SF::CLIK::GFx::Controls
 {

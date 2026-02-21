@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "src/c++/Scaleform/MovieClip.hpp"
+#include "Scaleform/MovieClip.hpp"
 
 namespace SF::CLIK::GFx::Core
 {

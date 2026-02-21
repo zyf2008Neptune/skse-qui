@@ -4,7 +4,7 @@
 #include <string>
 
 #include "LocalePackage.hpp"
-#include "src/c++/General/Singleton.hpp"
+#include "General/Singleton.hpp"
 
 namespace Core
 {

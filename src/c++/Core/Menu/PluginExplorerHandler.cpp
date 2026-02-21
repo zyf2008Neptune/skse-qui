@@ -9,7 +9,7 @@
 
 #include "PluginExplorerMenu.hpp"
 #include "PluginExplorer.hpp"
-#include "src/c++/Core/Config.hpp"
+#include "Core/Config.hpp"
 
 namespace Core::Menu
 {

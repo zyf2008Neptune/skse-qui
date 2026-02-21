@@ -14,10 +14,10 @@
 #include <RE/I/InputEvent.h>
 #include <RE/M/MenuEventHandler.h>
 
-#include "src/c++/Scaleform/CLIK/GFx/Controls/ButtonBar.hpp"
-#include "src/c++/Scaleform/Common/ItemList.hpp"
-#include "src/c++/Scaleform/MovieClip.hpp"
-#include "src/c++/Scaleform/TextField.hpp"
+#include "Scaleform/CLIK/GFx/Controls/ButtonBar.hpp"
+#include "Scaleform/Common/ItemList.hpp"
+#include "Scaleform/MovieClip.hpp"
+#include "Scaleform/TextField.hpp"
 
 namespace Core::Menu
 {

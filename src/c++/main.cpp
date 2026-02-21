@@ -1,6 +1,20 @@
+#include <memory>
+#include <string>
+#include <string_view>
+
+#include <fmt/format.h>
+#include <REX/W32/KERNEL32.h>
+#include <SKSE/API.h>
+#include <SKSE/Interfaces.h>
+#include <SKSE/Logger.h>
+#include <spdlog/sinks/basic_file_sink.h>
+#include <spdlog/sinks/msvc_sink.h>
+#include <spdlog/sinks/sink.h>
+#include <spdlog/spdlog.h>
+
 #include "Core/Core.hpp"
 
-void InitLogger()
+auto InitLogger() -> void
 {
     auto path = SKSE::log::log_directory();
     if (!path)
