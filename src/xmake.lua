@@ -15,7 +15,7 @@ target("QUI")
     -- add src files
     add_files("c++/**.cpp")
     add_includedirs("c++")
-    add_headerfiles("c++/**.hpp")
+    add_headerfiles("c++/**.hpp","c++/**.inl")
     set_pcxxheader("c++/quipch.hpp")
        
     -- add flags

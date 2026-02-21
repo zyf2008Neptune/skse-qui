@@ -30,12 +30,9 @@ jobs:
           actions-cache-key: ${{ runner.os }}
  
       - name: Build
-        run: |
-          xmake f -v -y -m release
-          xmake -vD -y -g default
-          xmake f -v -y -m releasedbg
-          xmake -vD -y
-
+        run: 
+          xmake f -m release
+        
       - name: Pack
         run: |
           xmake pack

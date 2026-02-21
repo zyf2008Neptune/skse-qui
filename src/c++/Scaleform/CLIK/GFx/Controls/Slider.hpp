@@ -4,47 +4,47 @@
 
 namespace SF::CLIK::GFx::Controls
 {
-	class Slider :
-		public Core::UIComponent
-	{
-		using super = Core::UIComponent;
+    class Slider :
+        public Core::UIComponent
+    {
+        using super = Core::UIComponent;
 
-	public:
-		using super::super;
-		using super::operator=;
+    public:
+        using super::super;
+        using super::operator=;
 
-		Slider() = default;
-		Slider(const Slider&) = default;
-		Slider(Slider&&) = default;
+        Slider() = default;
+        Slider(const Slider&) = default;
+        Slider(Slider&&) = default;
 
-		~Slider() = default;
+        ~Slider() = default;
 
-		Slider& operator=(const Slider&) = default;
-		Slider& operator=(Slider&&) = default;
-		Slider& operator=(const super& a_rhs);
-		Slider& operator=(super&& a_rhs);
+        auto operator=(const Slider&) -> Slider& = default;
+        auto operator=(Slider&&) -> Slider& = default;
+        auto operator=(const super& a_rhs) -> Slider&;
+        auto operator=(super&& a_rhs) -> Slider&;
 
-	public:
-		// Properties
-		bool   Disabled() const { return GetBoolean("disabled"); }
-		void   Disabled(bool a_value) { SetBoolean("disabled", a_value); }
-		double Maximum() const { return GetNumber("maximum"); }
-		void   Maximum(double a_value) { SetNumber("maximum", a_value); }
-		double Minimum() const { return GetNumber("minimum"); }
-		void   Minimum(double a_value) { SetNumber("minimum", a_value); }
-		double Position() const { return GetNumber("position"); }
-		void   Position(double a_value) { SetNumber("position", a_value); }
-		double SnapInterval() const { return GetNumber("snapInterval"); }
-		void   SnapInterval(double a_value) { SetNumber("snapInterval", a_value); }
-		bool   Snapping() const { return GetBoolean("snapping"); }
-		void   Snapping(bool a_value) { SetBoolean("snapping", a_value); }
-		double Value() const { return GetNumber("value"); }
-		void   Value(double a_value) { SetNumber("value", a_value); }
+    public:
+        // Properties
+        auto Disabled() const -> bool { return GetBoolean("disabled"); }
+        auto Disabled(bool a_value) -> void { SetBoolean("disabled", a_value); }
+        auto Maximum() const -> double { return GetNumber("maximum"); }
+        auto Maximum(double a_value) -> void { SetNumber("maximum", a_value); }
+        auto Minimum() const -> double { return GetNumber("minimum"); }
+        auto Minimum(double a_value) -> void { SetNumber("minimum", a_value); }
+        auto Position() const -> double { return GetNumber("position"); }
+        auto Position(double a_value) -> void { SetNumber("position", a_value); }
+        auto SnapInterval() const -> double { return GetNumber("snapInterval"); }
+        auto SnapInterval(double a_value) -> void { SetNumber("snapInterval", a_value); }
+        auto Snapping() const -> bool { return GetBoolean("snapping"); }
+        auto Snapping(bool a_value) -> void { SetBoolean("snapping", a_value); }
+        auto Value() const -> double { return GetNumber("value"); }
+        auto Value(double a_value) -> void { SetNumber("value", a_value); }
 
-	public:
-		// Methods
-		std::string ToString();
-	};
+    public:
+        // Methods
+        auto ToString() -> std::string;
+    };
 }
 
 #include "Slider.inl"

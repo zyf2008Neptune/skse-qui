@@ -42,24 +42,27 @@ namespace General::Script
     }
 
     template <class T>
-    inline T GetProperty(ObjectPtr a_obj, RE::BSFixedString a_prop)
+    inline auto GetProperty(ObjectPtr a_obj, RE::BSFixedString a_prop) -> T
     {
         auto var = a_obj->GetProperty(a_prop);
         return RE::BSScript::UnpackValue<T>(var);
     }
 
     template <class T>
-    inline void SetProperty(ObjectPtr a_obj, RE::BSFixedString a_prop, T a_val)
+    inline auto SetProperty(ObjectPtr a_obj, RE::BSFixedString a_prop, T a_val) -> void
     {
         auto var = a_obj->GetProperty(a_prop);
-        if (!var) return;
+        if (!var)
+        {
+            return;
+        }
 
         RE::BSScript::PackValue(var, a_val);
     }
 
     template <class... Args>
-    inline bool DispatchMethodCall(ObjectPtr a_obj, RE::BSFixedString a_fnName, CallbackPtr a_callback,
-                                   Args&&... a_args)
+    inline auto DispatchMethodCall(ObjectPtr a_obj, RE::BSFixedString a_fnName, CallbackPtr a_callback,
+                                   Args&&... a_args) -> bool
     {
         auto vm = InternalVM::GetSingleton();
         auto args = RE::MakeFunctionArguments(std::forward<Args>(a_args)...);
@@ -67,8 +70,8 @@ namespace General::Script
     }
 
     template <class... Args>
-    inline bool DispatchStaticCall(RE::BSFixedString a_class, RE::BSFixedString a_fnName, CallbackPtr a_callback,
-                                   Args&&... a_args)
+    inline auto DispatchStaticCall(RE::BSFixedString a_class, RE::BSFixedString a_fnName, CallbackPtr a_callback,
+                                   Args&&... a_args) -> bool
     {
         auto vm = InternalVM::GetSingleton();
         auto args = RE::MakeFunctionArguments(std::forward<Args>(a_args)...);
