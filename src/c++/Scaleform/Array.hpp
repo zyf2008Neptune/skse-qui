@@ -4,8 +4,7 @@
 
 namespace SF
 {
-    class Array :
-        public Object
+    class Array : public Object
     {
     private:
         using super = Object;
@@ -55,6 +54,4 @@ namespace SF
         auto Shift() -> Object;
         auto Splice(double a_startIndex, std::optional<double> a_deleteCount, std::optional<Object> a_value) -> void;
     };
-}
-
-#include "Array.inl"
+} // namespace SF

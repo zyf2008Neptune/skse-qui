@@ -61,5 +61,3 @@ namespace SF::CLIK::GFx::Controls
         auto ToString() -> std::string;
     };
 } // namespace SF::CLIK::GFx::Controls
-
-#include "Button.inl"

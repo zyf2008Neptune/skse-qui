@@ -14,10 +14,11 @@ namespace Core::Menu
     {
         _AcceptFn(this, a_cbReg);
         fxDelegate->callbacks.Remove("RememberCurrentTabIndex");
-        a_cbReg->Process("RememberCurrentTabIndex", [](const RE::FxDelegateArgs&)
-        {
-            // Empty
-        });
+        a_cbReg->Process("RememberCurrentTabIndex",
+                         [](const RE::FxDelegateArgs&)
+                         {
+                             // Empty
+                         });
     }
 
     auto JournalMenuEx::ProcessMessageEx(RE::UIMessage& a_message) -> RE::UI_MESSAGE_RESULTS
@@ -48,4 +49,4 @@ namespace Core::Menu
         _ProcessMessageFn = vtbl.write_vfunc(0x4, &JournalMenuEx::ProcessMessageEx);
         _TabIdx = {REL::RelocationID(520167, 406697)};
     }
-}
+} // namespace Core::Menu

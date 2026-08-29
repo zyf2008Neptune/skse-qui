@@ -27,27 +27,24 @@ namespace Core::ConsoleCommand
         info->referenceFunction = false;
     }
 
-    auto Clear::Execute(const RE::SCRIPT_PARAMETER*, RE::SCRIPT_FUNCTION::ScriptData*,
-                        RE::TESObjectREFR*, RE::TESObjectREFR*, RE::Script*, RE::ScriptLocals*, double&,
-                        uint32_t&) -> bool
+    auto Clear::Execute(const RE::SCRIPT_PARAMETER*, RE::SCRIPT_FUNCTION::ScriptData*, RE::TESObjectREFR*,
+                        RE::TESObjectREFR*, RE::Script*, RE::ScriptLocals*, double&, uint32_t&) -> bool
     {
         const auto task = SKSE::GetTaskInterface();
-        task->AddUITask([]
-        {
-            const auto ui = RE::UI::GetSingleton();
-            const auto console = ui ? ui->GetMenu<RE::Console>() : nullptr;
-            const auto movie = console ? console->uiMovie : nullptr;
-            if (movie)
+        task->AddUITask(
+            []
             {
-                movie->Invoke("Console.ClearHistory", nullptr, nullptr, 0);
-            }
-        });
+                const auto ui = RE::UI::GetSingleton();
+                const auto console = ui ? ui->GetMenu<RE::Console>() : nullptr;
+                const auto movie = console ? console->uiMovie : nullptr;
+                if (movie)
+                {
+                    movie->Invoke("Console.ClearHistory", nullptr, nullptr, 0);
+                }
+            });
 
         return true;
     }
 
-    auto Register() -> void
-    {
-        Clear::Register();
-    }
-}
+    auto Register() -> void { Clear::Register(); }
+} // namespace Core::ConsoleCommand

@@ -7,8 +7,7 @@
 
 namespace SF
 {
-    class ItemList :
-        public CLIK::GFx::Controls::ScrollingList
+    class ItemList : public CLIK::GFx::Controls::ScrollingList
     {
         using super = CLIK::GFx::Controls::ScrollingList;
 
@@ -38,7 +37,10 @@ namespace SF
         auto SelectedItem() -> IItem::Ptr;
 
         template <class T>
-        auto SelectedItem() -> std::shared_ptr<T>;
+        inline auto SelectedItem() -> std::shared_ptr<T>
+        {
+            return std::static_pointer_cast<T>(SelectedItem());
+        }
 
     public:
         auto clear() noexcept -> void { _impl.clear(); }
@@ -49,6 +51,4 @@ namespace SF
         RE::GFxValue _provider;
         std::vector<IItem::Ptr> _impl;
     };
-}
-
-#include "ItemList.inl"
+} // namespace SF

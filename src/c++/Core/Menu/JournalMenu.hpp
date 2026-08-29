@@ -20,7 +20,7 @@ namespace Core::Menu
     public:
         auto AcceptEx(RE::FxDelegateHandler::CallbackProcessor* a_cbReg) -> void; // 01
         auto ProcessMessageEx(RE::UIMessage& a_message) -> RE::UI_MESSAGE_RESULTS; // 04
-        ~JournalMenuEx() override = default;
+        ~JournalMenuEx() override;
 
     private:
         using AcceptFn = decltype(&RE::JournalMenu::Accept);
@@ -30,4 +30,4 @@ namespace Core::Menu
         inline static REL::Relocation<ProcessMessageFn> _ProcessMessageFn;
         inline static REL::Relocation<Tab*> _TabIdx;
     };
-}
+} // namespace Core::Menu

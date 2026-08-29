@@ -11,8 +11,8 @@
 #include <RE/B/ButtonEvent.h>
 #include <RE/C/ControlMap.h>
 #include <RE/F/FormTypes.h>
-#include <RE/G/GameSettingCollection.h>
 #include <RE/G/GFxState.h>
+#include <RE/G/GameSettingCollection.h>
 #include <RE/H/HUDMenu.h>
 #include <RE/I/IMenu.h>
 #include <RE/I/InputEvent.h>
@@ -36,10 +36,9 @@
 
 namespace Core::Menu
 {
-    PluginExplorerMenu::PluginExplorerMenu() :
-        Super(), RE::MenuEventHandler()
+    PluginExplorerMenu::PluginExplorerMenu() : IMenu(), MenuEventHandler()
     {
-        const auto menu = static_cast<Super*>(this);
+        const auto menu = static_cast<IMenu*>(this);
         menu->inputContext = Context::kItemMenu;
         menu->depthPriority = SORT_PRIORITY;
         menu->menuFlags.set(Flag::kUsesMenuContext, Flag::kDisablePauseMenu, Flag::kAllowSaving, Flag::kHasButtonBar,
@@ -107,7 +106,7 @@ namespace Core::Menu
         }
         default:
         {
-            return Super::ProcessMessage(a_message);
+            return IMenu::ProcessMessage(a_message);
         }
         }
     }
@@ -141,7 +140,7 @@ namespace Core::Menu
             _heldCount = 0;
         }
 
-        Super::AdvanceMovie(a_interval, a_currentTime);
+        IMenu::AdvanceMovie(a_interval, a_currentTime);
     }
 
     auto PluginExplorerMenu::CanProcess(RE::InputEvent* a_event) -> bool
@@ -634,7 +633,7 @@ namespace Core::Menu
 
     auto PluginExplorerMenu::UpdateTitle() -> void
     {
-        std::string str{};
+        std::string str;
         if (_focus == Focus::Form)
         {
             str = _pluginName;
@@ -652,7 +651,10 @@ namespace Core::Menu
 
     auto PluginExplorerMenu::UpdateButtonBar() -> void
     {
-        if (!_view) { return; }
+        if (!_view)
+        {
+            return;
+        }
 
         uint32_t indexAccept;
         uint32_t indexCancel;

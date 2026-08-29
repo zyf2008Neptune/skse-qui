@@ -49,10 +49,10 @@ namespace SF
         auto GetInstance() -> RE::GFxValue&;
         auto HasOwnProperty(std::string_view a_name) -> bool;
         auto IsPropertyEnumerable(std::string_view a_name) -> bool;
-        auto IsPrototypeOf(Object& a_theClass) -> bool;
+        auto IsPrototypeOf(const Object& a_theClass) -> bool;
         auto Prototype() const -> Object;
         auto Resolve() const -> Object;
-        auto Resolve(Object& a_resolve) -> void;
+        auto Resolve(const Object& a_resolve) -> void;
         auto ToString() -> std::string;
         auto Unwatch(std::string_view a_name) -> bool;
         auto ValueOf() -> Object;
@@ -65,8 +65,8 @@ namespace SF
         auto GetString(const char* a_path) const -> std::string;
         auto Invoke(const char* a_name) -> bool;
         auto Invoke(const char* a_name, RE::GFxValue* a_result) -> bool;
-        auto Invoke(const char* a_name, RE::GFxValue* a_result, const RE::GFxValue* a_args,
-                    RE::UPInt a_numArgs) -> bool;
+        auto Invoke(const char* a_name, RE::GFxValue* a_result, const RE::GFxValue* a_args, RE::UPInt a_numArgs)
+            -> bool;
         auto IsArray() const -> bool;
         auto IsObject() const -> bool;
         auto SetBoolean(const char* a_path, bool a_bool) -> void;
@@ -78,11 +78,13 @@ namespace SF
         auto SetStringW(const char* a_path, std::wstring_view a_str) -> void;
 
         template <class... Args>
-        auto InvokeA(const char* a_name, RE::GFxValue* a_result, Args... a_args) -> bool;
+        inline auto InvokeA(const char* a_name, RE::GFxValue* a_result, Args... a_args) -> bool
+        {
+            std::array<RE::GFxValue, sizeof...(a_args)> args{(std::forward<Args>(a_args), ...)};
+            return Invoke(a_name, a_result, args.data(), args.size());
+        }
 
     protected:
-        RE::GFxValue _instance{};
+        RE::GFxValue _instance;
     };
-}
-
-#include "Object.inl"
+} // namespace SF

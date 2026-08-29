@@ -4,8 +4,7 @@
 
 namespace SF::CLIK::GFx::Controls
 {
-    class ScrollingList :
-        public CoreList
+    class ScrollingList : public CoreList
     {
     private:
         using super = CoreList;
@@ -49,6 +48,4 @@ namespace SF::CLIK::GFx::Controls
         auto ScrollToIndex(double a_index) -> void;
         auto ToString() -> std::string;
     };
-}
-
-#include "ScrollingList.inl"
+} // namespace SF::CLIK::GFx::Controls

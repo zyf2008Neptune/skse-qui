@@ -7,8 +7,7 @@
 
 namespace SF
 {
-    class MovieClip :
-        public Object
+    class MovieClip : public Object
     {
     private:
         using super = Object;
@@ -97,6 +96,4 @@ namespace SF
         auto YScale() const -> double { return GetNumber("_yscale"); }
         auto YScale(double a_yScale) -> void { SetNumber("_yscale", a_yScale); }
     };
-}
-
-#include "MovieClip.inl"
+} // namespace SF

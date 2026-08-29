@@ -8,8 +8,7 @@
 
 namespace SF::CLIK::GFx::Controls
 {
-    class ButtonBar :
-        public Core::UIComponent
+    class ButtonBar : public Core::UIComponent
     {
     private:
         using super = Core::UIComponent;
@@ -60,6 +59,4 @@ namespace SF::CLIK::GFx::Controls
         auto ItemToLabel(Object a_item) -> std::string;
         auto ToString() -> std::string;
     };
-}
-
-#include "ButtonBar.inl"
+} // namespace SF::CLIK::GFx::Controls

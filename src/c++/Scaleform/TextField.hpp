@@ -4,8 +4,7 @@
 
 namespace SF
 {
-    class TextField :
-        public Object
+    class TextField : public Object
     {
     private:
         using super = Object;
@@ -189,6 +188,4 @@ namespace SF
         auto CutToClipboard(bool a_richClipboard, double a_startIndex, double a_endIndex) -> void;
         auto PasteFromClipboard(bool a_richClipboard, double a_startIndex, double a_endIndex) -> void;
     };
-}
-
-#include "TextField.inl"
+} // namespace SF

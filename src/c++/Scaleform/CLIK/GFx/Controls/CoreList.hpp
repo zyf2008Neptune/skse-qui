@@ -8,8 +8,7 @@
 
 namespace SF::CLIK::GFx::Controls
 {
-    class CoreList :
-        public Core::UIComponent
+    class CoreList : public Core::UIComponent
     {
     private:
         using super = Core::UIComponent;
@@ -57,6 +56,4 @@ namespace SF::CLIK::GFx::Controls
         auto SetRendererList(Array& a_value) -> void;
         auto ToString() -> std::string;
     };
-}
-
-#include "CoreList.inl"
+} // namespace SF::CLIK::GFx::Controls

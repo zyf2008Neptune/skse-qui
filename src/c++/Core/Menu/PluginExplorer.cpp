@@ -168,7 +168,7 @@ namespace Core::Menu
         containerRef->formFlags |= RE::TESForm::RecordFlags::kTemporary;
         containerRef->data.objectReference = _container;
         containerRef->extraList.SetOwner(playerRef);
-        //containerRef->SetParentCell(_cell);
+        // containerRef->SetParentCell(_cell);
         containerRef->SetStartingPosition({0, 0, 0});
         _containerRef = containerRef->CreateRefHandle();
     }
@@ -328,13 +328,12 @@ namespace Core::Menu
                 continue;
             }
 
-            auto it = _cache.find(file->fileName);
-            if (it == _cache.end())
+            if (!_cache.contains(file->fileName))
             {
                 continue;
             }
 
-            auto index = file->GetCombinedIndex();
+            const auto index = file->GetCombinedIndex();
             auto info = _plugins.find(index);
             if (info != _plugins.end())
             {
@@ -342,4 +341,4 @@ namespace Core::Menu
             }
         }
     }
-}
+} // namespace Core::Menu

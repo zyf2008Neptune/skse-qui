@@ -14,19 +14,16 @@
 #include <RE/I/InputEvent.h>
 #include <RE/M/MenuEventHandler.h>
 
-#include "Scaleform/CLIK/GFx/Controls/ButtonBar.hpp"
-#include "Scaleform/Common/ItemList.hpp"
 #include "Scaleform/MovieClip.hpp"
 #include "Scaleform/TextField.hpp"
+#include "Scaleform/CLIK/GFx/Controls/ButtonBar.hpp"
+#include "Scaleform/Common/ItemList.hpp"
 
 namespace Core::Menu
 {
-    class PluginExplorerMenu :
-        public RE::IMenu,
-        public RE::MenuEventHandler
+    class PluginExplorerMenu : public RE::IMenu, public RE::MenuEventHandler
     {
     public:
-        using Super = RE::IMenu;
         using GRefCountBaseStatImpl::operator new;
         using GRefCountBaseStatImpl::operator delete;
 
@@ -38,7 +35,7 @@ namespace Core::Menu
         PluginExplorerMenu();
         ~PluginExplorerMenu() override;
 
-        static auto Create() -> RE::IMenu* { return new PluginExplorerMenu(); }
+        static auto Create() -> IMenu* { return new PluginExplorerMenu(); }
 
         // override (IMenu)
         auto ProcessMessage(RE::UIMessage& a_message) -> RE::UI_MESSAGE_RESULTS override;
@@ -50,12 +47,12 @@ namespace Core::Menu
         auto ProcessButton(RE::ButtonEvent* a_event) -> bool override;
 
     public:
-        enum class Focus:std::uint8_t
+        enum class Focus : std::uint8_t
         {
             Plugin,
             Form,
             Container,
-            ContainerLoop
+            ContainerLoop,
         };
 
     public:
@@ -123,4 +120,4 @@ namespace Core::Menu
         static inline auto _formType{RE::FormType::None};
         static inline double _formListIndex{0};
     };
-}
+} // namespace Core::Menu

@@ -6,8 +6,7 @@
 
 namespace SF::CLIK::GFx::Core
 {
-    class UIComponent :
-        public MovieClip
+    class UIComponent : public MovieClip
     {
         using super = MovieClip;
 
@@ -51,6 +50,4 @@ namespace SF::CLIK::GFx::Core
         auto ToString() -> std::string;
         auto DispatchEventToGame(Object& a_event) -> void;
     };
-}
-
-#include "UIComponent.inl"
+} // namespace SF::CLIK::GFx::Core

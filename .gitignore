@@ -12,3 +12,7 @@ build/
 /Folder.DotSettings.user
 /cmakebuild
 /vsxmake2022
+compile_commands.json
+/.zed
+.zed/
+.cache/

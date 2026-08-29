@@ -1,36 +1,34 @@
+#include "ItemList.hpp"
+
 namespace SF
 {
-    inline ItemList::ItemList(const super& a_rhs) :
-        super(a_rhs)
-    {}
+    ItemList::ItemList(const super& a_rhs) : super(a_rhs) {}
 
-    inline ItemList::ItemList(super&& a_rhs) :
-        super(std::move(a_rhs))
-    {}
+    ItemList::ItemList(super&& a_rhs) : super(std::move(a_rhs)) {}
 
-    inline auto ItemList::operator=(const super& a_rhs) -> ItemList&
+    auto ItemList::operator=(const super& a_rhs) -> ItemList&
     {
         super::operator=(a_rhs);
         return *this;
     }
 
-    inline auto ItemList::operator=(super&& a_rhs) -> ItemList&
+    auto ItemList::operator=(super&& a_rhs) -> ItemList&
     {
         super::operator=(std::move(a_rhs));
         return *this;
     }
-}
+} // namespace SF
 
 namespace SF
 {
-    inline auto ItemList::Init(RE::GPtr<RE::GFxMovieView> a_view) -> void
+    auto ItemList::Init(RE::GPtr<RE::GFxMovieView> a_view) -> void
     {
         _view = a_view;
         a_view->CreateArray(std::addressof(_provider));
         DataProvider(SF::Array{_provider});
     }
 
-    inline auto ItemList::ModSelectedIndex(double a_mod) -> void
+    auto ItemList::ModSelectedIndex(double a_mod) -> void
     {
         const auto maxIdx = static_cast<double>(_impl.size()) - 1.0;
         if (maxIdx >= 0.0)
@@ -39,7 +37,7 @@ namespace SF
         }
     }
 
-    inline auto ItemList::Refresh() -> void
+    auto ItemList::Refresh() -> void
     {
         _provider.ClearElements();
 
@@ -51,12 +49,9 @@ namespace SF
         InvalidateData();
     }
 
-    inline auto ItemList::RestoreIndex(double a_idx) -> void
-    {
-        RestoreIndex(static_cast<ptrdiff_t>(a_idx));
-    }
+    auto ItemList::RestoreIndex(double a_idx) -> void { RestoreIndex(static_cast<ptrdiff_t>(a_idx)); }
 
-    inline auto ItemList::RestoreIndex(ptrdiff_t a_idx) -> void
+    auto ItemList::RestoreIndex(ptrdiff_t a_idx) -> void
     {
         const auto ssize = std::ssize(_impl);
         if (0 <= a_idx && a_idx < ssize)
@@ -80,7 +75,7 @@ namespace SF
         }
     }
 
-    inline auto ItemList::SelectedItem() -> IItem::Ptr
+    auto ItemList::SelectedItem() -> IItem::Ptr
     {
         auto pos = static_cast<ptrdiff_t>(SelectedIndex());
         if (0 <= pos && pos < std::ssize(_impl))
@@ -90,10 +85,4 @@ namespace SF
 
         return nullptr;
     }
-
-    template <class T>
-    inline auto ItemList::SelectedItem() -> std::shared_ptr<T>
-    {
-        return std::static_pointer_cast<T>(SelectedItem());
-    }
-}
+} // namespace SF

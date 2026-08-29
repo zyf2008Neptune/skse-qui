@@ -7,13 +7,12 @@
 
 namespace Core
 {
-    class LocaleStrings :
-        public ISingleton<LocaleStrings>
+    class LocaleStrings : public ISingleton<LocaleStrings>
     {
         std::string unhandled{"[Unhandled]"};
 
     public:
-        const std::string& FormType(RE::FormType a_type)
+        auto FormType(RE::FormType a_type) -> const std::string&
         {
             switch (a_type)
             {
@@ -88,4 +87,4 @@ namespace Core
 
         std::string plugPlugins{"$QDX_QUI_PLUGINEXPLORER_PLUGINS"};
     };
-}
+} // namespace Core

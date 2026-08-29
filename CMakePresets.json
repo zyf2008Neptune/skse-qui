@@ -1,11 +1,11 @@
 ﻿{
   "configurePresets": [
     {
-      
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": {
           "type": "STRING",
-          "value": "Release"
+          "value": "Debug"
         }
       },
       "errors": {
@@ -20,7 +20,18 @@
     },
     {
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+        "CMAKE_TOOLCHAIN_FILE": {
+          "type": "STRING",
+          "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+        },
+        "VCPKG_OVERLAY_PORTS": {
+          "type": "STRING",
+          "value": "${sourceDir}/cmake/ports"
+        },
+        "VCPKG_OVERLAY_TRIPLETS": {
+          "type": "STRING",
+          "value": "${sourceDir}/cmake/triplets"
+        }
       },
       "hidden": true,
       "name": "vcpkg"
@@ -37,21 +48,50 @@
         }
       },
       "hidden": true,
-      "name": "windows"
+      "name": "msvc"
     },
     {
       "cacheVariables": {
+        "ENABLE_SKYRIM_SE": {
+          "type": "BOOL",
+          "value": "ON"
+        },
+        "ENABLE_SKYRIM_AE": {
+          "type": "BOOL",
+          "value": "ON"
+        },
+        "ENABLE_SKYRIM_VR": {
+          "type": "BOOL",
+          "value": "ON"
+        }
+      },
+      "hidden": true,
+      "name": "skyrim-runtimes"
+    },
+    {
+      "cacheVariables": {
+        "CMAKE_CXX_FLAGS": "/EHsc /MP /W4",
+        "CMAKE_C_COMPILER": "cl",
         "CMAKE_CXX_COMPILER": "cl"
       },
-      "generator": "Ninja",
-      "inherits": [
-        "cmake-dev",
-        "vcpkg",
-        "windows"
-      ],
-      "name": "x64-windows",
-      "binaryDir": "${sourceDir}/cmakebuild/"
-    }    
+      "generator": "Ninja Multi-Config",
+      "inherits": ["cmake-dev", "vcpkg", "msvc", "skyrim-runtimes"],
+      "name": "msvc-windows"
+    }
   ],
-  "version": 2
+  "buildPresets": [
+    {
+      "name": "msvc-debug",
+      "displayName": "MSVC-Debug",
+      "configurePreset": "msvc-windows",
+      "configuration": "Debug"
+    },
+    {
+      "name": "msvc-release",
+      "displayName": "MSVC-Release",
+      "configurePreset": "msvc-windows",
+      "configuration": "Release"
+    }
+  ],
+  "version": 3
 }

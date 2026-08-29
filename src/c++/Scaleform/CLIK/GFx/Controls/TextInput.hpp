@@ -4,8 +4,7 @@
 
 namespace SF::CLIK::GFx::Controls
 {
-    class TextInput :
-        public Core::UIComponent
+    class TextInput : public Core::UIComponent
     {
         using super = Core::UIComponent;
 
@@ -50,6 +49,4 @@ namespace SF::CLIK::GFx::Controls
         auto AppendText(std::string_view a_text) -> void;
         auto ToString() -> std::string;
     };
-}
-
-#include "TextInput.inl"
+} // namespace SF::CLIK::GFx::Controls

@@ -7,8 +7,7 @@
 
 namespace SF::CLIK::GFx::Controls
 {
-    class DropdownMenu :
-        public Button
+    class DropdownMenu : public Button
     {
         using super = Button;
 
@@ -58,6 +57,4 @@ namespace SF::CLIK::GFx::Controls
         auto SetSize(double a_width, double a_height) -> void;
         auto ToString() -> std::string;
     };
-}
-
-#include "DropdownMenu.inl"
+} // namespace SF::CLIK::GFx::Controls

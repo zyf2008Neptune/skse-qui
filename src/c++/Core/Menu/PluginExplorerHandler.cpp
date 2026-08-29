@@ -47,7 +47,7 @@ namespace Core::Menu
             {
             case InputDevice::kGamepad:
             {
-                //ProcessGamepad(*event);
+                // ProcessGamepad(*event);
                 break;
             }
             case InputDevice::kKeyboard:
@@ -107,8 +107,7 @@ namespace Core::Menu
                     bool success = PluginExplorer::OpenContainer(pluginIndex, formType);
                     if (!success)
                     {
-                        SKSE::log::info("Failed to open container: [{}] {} ({})",
-                                        pluginIndex, pluginName, formName);
+                        SKSE::log::info("Failed to open container: [{}] {} ({})", pluginIndex, pluginName, formName);
                     }
                 }
             }
@@ -126,4 +125,4 @@ namespace Core::Menu
             Menu::Toggle();
         }
     }
-}
+} // namespace Core::Menu

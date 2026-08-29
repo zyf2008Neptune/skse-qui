@@ -4,8 +4,7 @@
 
 namespace SF::CLIK::GFx::Controls
 {
-    class Slider :
-        public Core::UIComponent
+    class Slider : public Core::UIComponent
     {
         using super = Core::UIComponent;
 
@@ -16,6 +15,9 @@ namespace SF::CLIK::GFx::Controls
         Slider() = default;
         Slider(const Slider&) = default;
         Slider(Slider&&) = default;
+
+        Slider(const super& a_rhs);
+        Slider(super&& a_rhs);
 
         ~Slider() = default;
 
@@ -45,6 +47,4 @@ namespace SF::CLIK::GFx::Controls
         // Methods
         auto ToString() -> std::string;
     };
-}
-
-#include "Slider.inl"
+} // namespace SF::CLIK::GFx::Controls

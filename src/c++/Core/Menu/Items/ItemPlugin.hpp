@@ -11,11 +11,8 @@ namespace Core::Menu::Item
     {
     public:
         ItemPlugin(uint32_t a_index, std::string_view a_name, size_t a_count) :
-            _index(a_index),
-            _name(a_name),
-            _count(a_count)
-        {
-        }
+            _index(a_index), _name(a_name), _count(a_count)
+        {}
 
         [[nodiscard]] auto GFxValue(RE::GFxMovieView& a_view) const -> RE::GFxValue override
         {
@@ -44,8 +41,8 @@ namespace Core::Menu::Item
         [[nodiscard]] auto GetCount() const noexcept -> const size_t { return _count; }
 
     private:
-        uint32_t _index;
+        uint32_t _index{};
         std::string _name{""};
         size_t _count{0};
     };
-}
+} // namespace Core::Menu::Item

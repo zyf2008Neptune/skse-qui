@@ -16,9 +16,7 @@ namespace Core::Menu::Item
     class ItemForm : public SF::IItem
     {
     public:
-        ItemForm(RE::FormType a_type, size_t a_count) :
-            _type(a_type),
-            _count(a_count)
+        ItemForm(RE::FormType a_type, size_t a_count) : _type(a_type), _count(a_count)
         {
             auto locale = LocaleManager::GetSingleton();
             auto locStr = LocaleStrings::GetSingleton();
@@ -46,4 +44,4 @@ namespace Core::Menu::Item
         std::string _name{""};
         size_t _count{0};
     };
-}
+} // namespace Core::Menu::Item
