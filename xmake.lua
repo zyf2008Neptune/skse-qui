@@ -20,11 +20,11 @@ set_config("skse_xbyak", true)
 
 -- allowed
 set_allowedarchs("x64")
-set_allowedmodes("release", "debug")
+set_allowedmodes("release", "releasedbg")
 
 -- default
 set_defaultarchs("x64")
-set_defaultmode("release")
+set_defaultmode("releasedbg")
 
 -- rules
 add_rules("mode.releasedbg")

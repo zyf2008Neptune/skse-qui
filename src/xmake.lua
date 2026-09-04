@@ -69,8 +69,6 @@ target("QUI")
         { public = true }
     )
 
-    set_symbols("debug")
-
     add_rules("mod.package", {
         ["@{target}-@{target_ver}.zip"] = {
             { "@{target_dir}", "@{target}.dll", "Data/SKSE/Plugins/" },

@@ -16,7 +16,7 @@
 #include <RE/H/HUDMenu.h>
 #include <RE/I/IMenu.h>
 #include <RE/I/InputEvent.h>
-#include <RE/M/MenuEventHandler.h>
+#include <RE/M/MenuEventHandlerEx.h>
 #include <RE/P/PlayerCharacter.h>
 #include <RE/U/UI.h>
 #include <RE/U/UIMessage.h>
@@ -36,7 +36,7 @@
 
 namespace Core::Menu
 {
-    PluginExplorerMenu::PluginExplorerMenu() : IMenu(), MenuEventHandler()
+    PluginExplorerMenu::PluginExplorerMenu() : IMenu(), MenuEventHandlerEx()
     {
         const auto menu = static_cast<IMenu*>(this);
         menu->inputContext = Context::kItemMenu;
@@ -73,13 +73,13 @@ namespace Core::Menu
         InitExtensions();
 
         const auto mc = RE::MenuControls::GetSingleton();
-        mc->RegisterHandler(this);
+        mc->RegisterHandler(this->Handler());
     }
 
     PluginExplorerMenu::~PluginExplorerMenu()
     {
         const auto mc = RE::MenuControls::GetSingleton();
-        mc->RemoveHandler(this);
+        mc->RemoveHandler(this->Handler());
     }
 
     auto PluginExplorerMenu::ProcessMessage(RE::UIMessage& a_message) -> RE::UI_MESSAGE_RESULTS

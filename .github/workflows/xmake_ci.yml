@@ -2,15 +2,15 @@
 
 on:
   push:
-    branches: [ main, dev ]
+    branches: [main, dev]
     paths:
-      - '.github/workflows/main_ci.yml'
-      - 'res/**'
-      - 'src/**'
-      - 'xmake.lua'
-      
+      - ".github/workflows/main_ci.yml"
+      - "res/**"
+      - "src/**"
+      - "xmake.lua"
+
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   windows:
@@ -23,16 +23,15 @@ jobs:
           submodules: recursive
 
       - name: Setup XMake
-        uses: xmake-io/github-action-setup-xmake@v1.0.13
+        uses: xmake-io/github-action-setup-xmake@v1
         with:
           xmake-version: latest
-          actions-cache-folder: '.xmake-cache'
+          actions-cache-folder: ".xmake-cache"
           actions-cache-key: ${{ runner.os }}
- 
+
       - name: Build
-        run: 
-          xmake f -m release
-        
+        run: xmake f -m releasedbg
+
       - name: Pack
         run: |
           xmake pack
@@ -42,6 +41,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build
-          path: ${{ github.workspace }}/build/packages/**/*.zip
-
-
+          path: ${{ github.workspace }}/build/windows/x64/**/*.zip

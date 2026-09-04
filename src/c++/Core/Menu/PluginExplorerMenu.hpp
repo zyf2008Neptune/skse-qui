@@ -12,7 +12,7 @@
 #include <RE/G/GRefCountBaseStatImpl.h>
 #include <RE/I/IMenu.h>
 #include <RE/I/InputEvent.h>
-#include <RE/M/MenuEventHandler.h>
+#include <RE/M/MenuEventHandlerEx.h>
 
 #include "Scaleform/MovieClip.hpp"
 #include "Scaleform/TextField.hpp"
@@ -21,7 +21,7 @@
 
 namespace Core::Menu
 {
-    class PluginExplorerMenu : public RE::IMenu, public RE::MenuEventHandler
+    class PluginExplorerMenu : public RE::IMenu, public RE::MenuEventHandlerEx
     {
     public:
         using GRefCountBaseStatImpl::operator new;
